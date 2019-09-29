@@ -1,7 +1,4 @@
-function log(code){
-  console.log(code);
-}
-//Array - pols per person
+//virtual data
 const polls = [
   [1, 5, 2], [4, 3, 1], [5, 4, 3], [1, 5, 4], [2, 3, 1], [5, 4, 3], 
   [1, 3, 2], [3, 5, 1], [4, 3, 2], [5, 1, 4], [2, 3, 1], [5, 4, 2], 
@@ -9,85 +6,69 @@ const polls = [
   [2, 1, 5], [4, 3, 1], [2, 5, 1], [2, 4, 3], [1, 5, 2], [4, 3, 2], 
   [1, 5, 2], [1, 2, 3], [5, 4, 1], [5, 2, 4], [3, 1, 3], [1, 3, 5]
 ];
-let answersNum = [],
-    averageTxts = [];
+
+let graphs = [];
 const questionNum = document.querySelectorAll("[data-js=question]").length,
       graphIndexes = document.querySelectorAll(".index_graph"),
       graphAreaSample = document.querySelectorAll(".list_poll_graph")[0],
-      choiceLength = graphAreaSample.children.length;
-(function pollsPerAnswer(){  
-  let pollStrings = [];
-  //질문 갯수만큼 배열 생성
-  for(let x = 0; x < questionNum; x++ ){
-    pollStrings[x] = "";
-    answersNum[x] = new Array;
-    averageTxts[x] = new Array;
+      optionLength = graphAreaSample.children.length,
+      indexGap = 2;//index option
+
+for(let x = 0; x < questionNum; x++ ){
+  graphs[x] = {};
+  graphs[x].answers = [];
+  graphs[x].answerScore = [];
+  graphs[x].maxValue = 0;
+  graphs[x].indexNum = 0;
+  graphs[x].average = 0;
+  graphs[x].sumScores = 0;
+
+  /*Combine the polls data by question into one string
+  and insert them into the array */
+  let strAllPolls = [];
+  strAllPolls[x] = "";
+  for(let y = 0; y < polls.length; y++ ){
+    strAllPolls[x] += (polls[y][x]);
   }
-  //문항별 답들을 한개의 스트링으로 합쳐서 방금 생성한 배열에 삽입
-  for(let x = 0; x < polls.length; x++ ){
-    for(let y = 0; y < questionNum; y++ ){
-      pollStrings[y] += (polls[x][y]);
-    }  
+
+  // Number of choices by option
+  for (let y = 0; y < optionLength; y++ ){
+    graphs[x].answers[y] = (strAllPolls[x].split(y + 1).length - 1);
   }
-  log("####문항별 전체 답 스트링(function spollsPerAnswer) ↓ ")
-  log(pollStrings);
-  log("----------------------------------------------");
+
+  graphs[x].maxValue = Math.max.apply(null, graphs[x].answers);
+  graphs[x].indexNum = Math.ceil( graphs[x].maxValue / indexGap);
 
 
-  for(let x = 0; x < questionNum; x++ ){
-    for (let y = 0; y < choiceLength; y++ ){
-      answersNum[x][y] = (pollStrings[x].split(y + 1).length - 1);
-    }
+  //graph vertical index add
+  for(let y = 0; y <= graphs[x].indexNum; y++){
+    graphIndexes[x].innerHTML += 				"<li class=\"item\"><span class=\"txt_num\">"+  (indexGap * y) + "</span></li>"
   }
-})();
 
-log("####문항별 답변 갯수 answersNum(global) ↓ ");
-log(answersNum);
-log("----------------------------------------------");
+  //graph horizontal bar
+  const questions = document.querySelectorAll("[data-js=question]"),
+        graphBarArea = questions[x].querySelector(".list_poll_graph"),
+        graphBars = graphBarArea.querySelectorAll(".bar_graph");
 
+  for(let y = 0; y < optionLength; y++){
+    graphBars[y].style.width = Math.round(graphs[x].answers[y] / ( graphs[x].indexNum * 2) * 100) + "%";
+    graphBars[y].querySelector(".txt_num").innerHTML = graphs[x].answers[y];
 
-function drawGraphIndex(){
-  
-  for(let x = 0; x < answersNum.length; x++){
-    const indexGap = 2,//인덱스 간격 설정
-          maxAnswer = Math.max.apply(null, answersNum[x]),
-          indexNum = Math.ceil( maxAnswer / indexGap);
+    // Score by Selection
+    graphs[x].answerScore[y] = graphs[x].answers[y] * ( y * 25 );
+  } 
 
-    //graph index - vertical
-    for(let y = 0; y <= indexNum; y++){
-      graphIndexes[x].innerHTML += 				"<li class=\"item\"><span class=\"txt_num\">"+  (indexGap * y) + "</span></li>"
-    } 
+  // Sum all scores by selection
+  graphs[x].sumScores = graphs[x].answerScore.reduce(function(total, num){
+    return total + num;
+  });
 
-    //graph bar - horizontal    
-    const questions = document.querySelectorAll("[data-js=question]"),
-          graphBarArea = questions[x].querySelector(".list_poll_graph"),
-          graphBars = graphBarArea.querySelectorAll(".bar_graph"),
-          widthPerAnswer = graphAreaSample.offsetWidth/ (indexNum * 2);
+  // Divide the sum of the scores and calculate the average.
+  graphs[x].average = graphs[x].sumScores / polls.length;
 
-    for(let y = 0; y < graphBars.length; y++){
-      graphBars[y].style.width = widthPerAnswer * answersNum[x][y] + "px";
-      graphBars[y].querySelector(".txt_num").innerHTML = answersNum[x][y];
-
-      //average 
-      averageTxts[x].push(answersNum[x][y] * (y*25))
-    } 
-
-    const averages = questions[x].querySelector(".average");
-    let sums = [0,0,0];
-    let sum = 0;
-    for (var y = 0; y < choiceLength; y++){
-      sum =+ averageTxts[x][y];
-    }
-    log(sum)
-    log(sums[x]/polls.length)
-  }  
-  log(averageTxts);
-  // for(let x = 0; x < answersNum.length; x++){
-
-  // }
+  // display the average
+  const averages = questions[x].querySelector(".average");
+  averages.innerHTML = graphs[x].average.toFixed(2);
 }
 
-
-window.onload =  function(){
-  drawGraphIndex();
-};
+console.log(graphs);
