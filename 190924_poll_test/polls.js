@@ -8,7 +8,8 @@ const polls = [
 ];
 
 let graphs = [];
-const questionNum = document.querySelectorAll("[data-js=question]").length,
+const questions = document.querySelectorAll("[data-js=question]"),
+      questionNum = questions.length,
       graphIndexes = document.querySelectorAll(".index_graph"),
       graphAreaSample = document.querySelectorAll(".list_poll_graph")[0],
       optionLength = graphAreaSample.children.length,
@@ -17,11 +18,11 @@ const questionNum = document.querySelectorAll("[data-js=question]").length,
 for(let x = 0; x < questionNum; x++ ){
   graphs[x] = {};
   graphs[x].answers = [];
-  graphs[x].answerScore = [];
+  graphs[x].scores = [];
   graphs[x].maxValue = 0;
   graphs[x].indexNum = 0;
   graphs[x].average = 0;
-  graphs[x].sumScores = 0;
+  graphs[x].scoreSum = 0;
 
   /*Combine the polls data by question into one string
   and insert them into the array */
@@ -39,15 +40,13 @@ for(let x = 0; x < questionNum; x++ ){
   graphs[x].maxValue = Math.max.apply(null, graphs[x].answers);
   graphs[x].indexNum = Math.ceil( graphs[x].maxValue / indexGap);
 
-
   //graph vertical index add
   for(let y = 0; y <= graphs[x].indexNum; y++){
     graphIndexes[x].innerHTML += 				"<li class=\"item\"><span class=\"txt_num\">"+  (indexGap * y) + "</span></li>"
   }
 
   //graph horizontal bar
-  const questions = document.querySelectorAll("[data-js=question]"),
-        graphBarArea = questions[x].querySelector(".list_poll_graph"),
+  const graphBarArea = questions[x].querySelector(".list_poll_graph"),
         graphBars = graphBarArea.querySelectorAll(".bar_graph");
 
   for(let y = 0; y < optionLength; y++){
@@ -55,16 +54,16 @@ for(let x = 0; x < questionNum; x++ ){
     graphBars[y].querySelector(".txt_num").innerHTML = graphs[x].answers[y];
 
     // Score by Selection
-    graphs[x].answerScore[y] = graphs[x].answers[y] * ( y * 25 );
+    graphs[x].scores[y] = graphs[x].answers[y] * ( y * 25 );
   } 
 
   // Sum all scores by selection
-  graphs[x].sumScores = graphs[x].answerScore.reduce(function(total, num){
+  graphs[x].scoreSum = graphs[x].scores.reduce(function(total, num){
     return total + num;
   });
 
   // Divide the sum of the scores and calculate the average.
-  graphs[x].average = graphs[x].sumScores / polls.length;
+  graphs[x].average = graphs[x].scoreSum / polls.length;
 
   // display the average
   const averages = questions[x].querySelector(".average");
