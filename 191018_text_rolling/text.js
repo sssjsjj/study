@@ -4,62 +4,59 @@ function log(code) {
 
 //  텍스트 롤링 
 function rollingText() {
-  const $rollTxtArea = document.querySelectorAll("[data-text]"),
-    speed = 500;   
-  let index = 0;
+  const $rollTxtArea = document.querySelectorAll("[data-text]");
+
   for (const rollTxtArea of $rollTxtArea) {
     const text = rollTxtArea.dataset.text;
+
+    let winH = window.innerHeight / 2,
+        winScrY = window.scrollY,
+        bodyScrH = document.querySelector("body").scrollHeight,
+        areaScrTop = rollTxtArea.offsetTop;
         
     let fired = false,
         fired1 = false;
     window.addEventListener("load", () => {
       //숫자인 경우 카운팅하면서 그려줘
-      if( rollTxtArea.offsetTop - 200 <= window.scrollY + 200){
+      if( areaScrTop - winH <= winScrY && winScrY < areaScrTop - 20){
         if(Number(text) && !fired) {
           drawNumber(rollTxtArea, 0, text);
           fired = true;
         }else if(isNaN(Number(text)) && !fired1){
           drawNaN(rollTxtArea, text, 0);        
+          showNaN(rollTxtArea, text, 0);
           fired1 = true;
         }      
       }
     });
-    window.addEventListener("scroll", () => {
+    window.addEventListener("wheel", () => {
+      winScrY = window.scrollY;
       //숫자인 경우 카운팅하면서 그려줘
-      if(window.scrollY + 400 >= rollTxtArea.offsetTop){
+      if(areaScrTop - winH <= winScrY && winScrY < areaScrTop - 20){
         if(Number(text) && !fired) {
           drawNumber(rollTxtArea, 0, text);
           fired = true;
         }else if(isNaN(Number(text)) && !fired1){
           drawNaN(rollTxtArea, text, 0);        
+          showNaN(rollTxtArea, text, 0);
           fired1 = true;
         }      
-      }else if(document.querySelector("body").scrollHeight <  window.innerHeight + window.scrollY){
+      }else if(bodyScrH <  window.innerHeight + winScrY){
         if(Number(text) && !fired) {
           drawNumber(rollTxtArea, 0, text);
           fired = true;
         }else if(isNaN(Number(text)) && !fired1){
           drawNaN(rollTxtArea, text, 0);        
+          showNaN(rollTxtArea, text, 0);
           fired1 = true;
         }      
       }
     });
-    index++;
   }
 }
 rollingText();
 
-// function rolling(text , area, fired, fired1){
-//   if(Number(text) && !fired) {
-//     drawNumber(area, 0, text);
-//     fired = true;
-//   }else if(isNaN(Number(text)) && !fired1){
-//     drawNaN(area, text, 0);        
-//     fired1 = true;
-//   }      
-// }
-
-// 카운팅 하면서 그려줘 ( 숫자 )
+// 숫자 카운팅 하면서 그려줘 ( Number )
 function drawNumber(area, startNum, limitNum) {
   if(startNum <= limitNum){
     setTimeout(() => {
@@ -72,12 +69,20 @@ function drawNumber(area, startNum, limitNum) {
 
 // 한 글자씩 그려줘 ( NaN )
 function drawNaN(area, text, startNum) {
-  log(text.length);
-  if(startNum <= text.length){
+  // log(text.length);
+  if(startNum < text.length){
+    area.innerHTML += `<span style="opacity:0;">${text.substring(startNum,startNum+1)}</span>`;
+    startNum++;
+    drawNaN(area, text, startNum);
+  }
+}
+
+function showNaN(area, text, startNum){
+  if(startNum < text.length){
     setTimeout(() => {
-      area.textContent += text.substring(startNum,startNum+1);
+      area.querySelectorAll("span")[startNum].style = "opacity: 1";
       startNum++;
-      drawNaN(area, text, startNum);
+      showNaN(area, text, startNum);
     }, 800 / text.length);
   }
 }
