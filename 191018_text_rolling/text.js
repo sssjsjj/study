@@ -19,12 +19,10 @@ function rollingText() {
   log(rTxts);
 
   for (const rTxt of rTxts) {
+
+    rollTime(rTxt);
+
     let scrolling = false;
-
-    window.addEventListener("load", () => {
-      rollTime(rTxt);
-    });
-
     window.addEventListener("scroll", () => {
       scrolling = true;
     });
@@ -76,7 +74,6 @@ function drawNumber(area, startNum, limitNum) {
 
 // 한 글자씩 셋팅 ( NaN )
 function drawNaN(area, text, startNum) {
-  // log(text.length);
   if (startNum < text.length) {
     area.innerHTML += `<span style="opacity:0;">${text.substring(startNum,startNum+1)}</span>`;
     startNum++;
