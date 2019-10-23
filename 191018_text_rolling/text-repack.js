@@ -3,85 +3,92 @@ function log(code) {
   console.log(code);
 }
 
-//원하는 프로퍼티 값 array 줘
-let map = (list, iteratee) => {
-  var new_list = [];
-  list.forEach(elem => {
-    new_list.push(iteratee(elem));
+// 롤링 텍스트 이벤트
+const texts = document.querySelectorAll("[data-text]");
+// 롤링 텍스트 json 배열 생성
+const rollingTexts = upData(upData(elemList(texts),
+    "cont", el => el.elem.dataset.text),
+  "scrollRange", () => false,
+  "done", () => false);
+log(rollingTexts);
+
+// 텍스트 롤링 시작!
+rollingTexts.forEach((rollingText) => {
+  fireRolling(rollingText);
+
+  let scrolling = false;
+  window.addEventListener("scroll", () => {
+    scrolling = true;
   });
-  return new_list;
-};
+
+  setInterval(() => {
+    if (scrolling) {
+      scrolling = false;
+      fireRolling(rollingText);
+    }
+  }, 150);
+});
 
 // 해당 엘리먼트 오브젝트 포함하여 배열 생성
-let elemList = (elems) => {
-  let new_list = [], i = 0;
-  for(const elem of elems){
+function elemList(elems) {
+  let new_list = [],
+    i = 0;
+  for (const elem of elems) {
     new_list[i] = {},
-    new_list[i].elem = elem;
+      new_list[i].elem = elem;
     i++;
   }
   return new_list;
-};
+}
 
 // 오브젝트 리스트에 원하는 key, value값 삽입하여 데이터 완성
-let upData = (objList, key, value) => {
+function upData(objList, key, value) {
   let new_list = objList;
   new_list.forEach(elem => {
     elem[key] = value(elem);
   });
   return new_list;
-};
+}
 
-// let setInterval = ()
-
-//  텍스트 롤링 
-const texts = document.querySelectorAll("[data-text]");
-const rTxts = upData(upData(elemList(texts), 
-"cont", el => el.elem.dataset.text), 
-"done", () => false);
-
-log(rTxts);
-
-  rTxts.forEach((rTxt, i) => {
-    rollTime(rTxt);
-
-    let scrolling = false;
-    window.addEventListener("scroll", () => {
-      scrolling = true;
-    });
-
-    setInterval(() => {
-      if (scrolling) {
-        scrolling = false;
-        rollTime(rTxt);
-      }
-    }, 150);
-  });
-
-function roll(rTxt) {
-  if (Number(rTxt.cont) && !rTxt.done) {
-    drawNumber(rTxt.elem, 0, rTxt.cont);
-    rTxt.done = true;
-  } else if (isNaN(Number(rTxt.cont)) && !rTxt.done) {
-    drawNaN(rTxt.elem, rTxt.cont, 0);
-    showNaN(rTxt.elem, rTxt.cont, 0);
-    rTxt.done = true;
+// 숫자라면 true를 줘
+function chkNum(value) {
+  if (Number(value)) {
+    return true
+  } else if (isNaN(Number(value))) {
+    return false;
   }
 }
 
-function rollTime(rTxt) {
+// 스크롤 범위 맞으면 true를 줘
+function chkScrRange(list) {
   let winH = window.innerHeight,
-      winScrY = window.scrollY,
-      bodyScrH = document.querySelector("body").scrollHeight,
-      elemScrTop = rTxt.elem.offsetTop;
+    winScrY = window.scrollY,
+    bodyScrH = document.querySelector("body").scrollHeight,
+    z
+  elemScrTop = list.elem.offsetTop;
   if (elemScrTop - winH / 2 < winScrY && winScrY < elemScrTop - 20) {
-    roll(rTxt);
+    return true
   } else if (bodyScrH - winH < elemScrTop && bodyScrH < winScrY + winH) {
-    roll(rTxt);
+    return true
+  } else {
+    return false;
   }
 }
 
-// 숫자 카운팅 하면서 그려줘 ( Number )
+// 조건 체크 후 텍스트 롤링
+function fireRolling(text) {
+  const commonIf = !text.done && chkScrRange(text);
+  if (chkNum(text.cont) && commonIf) {
+    drawNumber(text.elem, 0, text.cont);
+    text.done = true;
+  } else if (!chkNum(text.cont) && commonIf) {
+    drawNaN(text.elem, text.cont, 0);
+    showNaN(text.elem, text.cont, 0);
+    text.done = true;
+  }
+}
+
+// 숫자 카운팅 하면서 그려 ( Number )
 function drawNumber(elem, start, limitNum) {
   if (start <= limitNum) {
     setTimeout(() => {
