@@ -3,31 +3,52 @@ function log(code) {
   console.log(code);
 }
 
-// 롤링 텍스트 이벤트
-const texts = document.querySelectorAll("[data-text]");
-// 롤링 텍스트 json 배열 생성
-const rollingTexts = upData(upData(elemList(texts),
-    "cont", el => el.elem.dataset.text),
-  "scrollRange", () => false,
-  "done", () => false);
-log(rollingTexts);
-
-// 텍스트 롤링 시작!
-rollingTexts.forEach((rollingText) => {
-  fireRolling(rollingText);
-
-  let scrolling = false;
-  window.addEventListener("scroll", () => {
-    scrolling = true;
+// START: 롤링 텍스트 이벤트
+(function startRollingText(){
+  const texts = document.querySelectorAll("[data-text]");
+  // 롤링 텍스트 json 배열 생성
+  const rollingTexts = upData(upData(elemList(texts),
+                      "cont", el => el.elem.dataset.text),
+                      "scrollRange", () => false,
+                      "done", () => false);
+  log(rollingTexts);
+  
+  // 텍스트 롤링 시작!
+  rollingTexts.forEach((rollingText) => {
+    fireRolling(rollingText);
+  
+    let scrolling = false;
+    window.addEventListener("scroll", () => {
+      scrolling = true;
+    });
+  
+    setInterval(() => {
+      if (scrolling) {
+        scrolling = false;
+        fireRolling(rollingText);
+      }
+    }, 150);
   });
+})();
+// END: 롤링 텍스트 이벤트
 
-  setInterval(() => {
-    if (scrolling) {
-      scrolling = false;
-      fireRolling(rollingText);
-    }
-  }, 150);
-});
+// START: 슬라이더
+// 페이저, 컨트롤러, 루프, 프랙션, 오토
+(function startSlider(){
+  const $sliders = document.querySelectorAll("[data-slider]");
+  // 롤링 텍스트 json 배열 생성
+  const sliders = upData(upData(elemList($sliders),
+                  "slides", el => el.elem.children),                  
+                  "type", el => el.elem.dataset.slider,
+                  "scrollRange", () => false,
+                  "done", () => false);
+  log(sliders);
+
+  sliders.forEach((slider) => {
+    slider.elem.style.width = slider.slides[0].style.width
+  });
+})();
+// END: 슬라이더
 
 // 해당 엘리먼트 오브젝트 포함하여 배열 생성
 function elemList(elems) {
@@ -40,6 +61,8 @@ function elemList(elems) {
   }
   return new_list;
 }
+
+
 
 // 오브젝트 리스트에 원하는 key, value값 삽입하여 데이터 완성
 function upData(objList, key, value) {
@@ -118,3 +141,5 @@ function showNaN(elem, text, start) {
     }, 800 / text.length);
   }
 }
+
+// 슬라이더

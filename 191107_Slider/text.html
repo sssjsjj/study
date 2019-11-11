@@ -29,20 +29,27 @@
 		.txt_num .txt {display: inline-block; font-size: 20px; line-break: 1.3em;}
 
 		/* Slider */
-		.wrap-slider{}
+		.wrap-slider{overflow: hidden; width: 600px;}
+		.wrap-slider .slider{display: flex;}
+		.wrap-slider .slide{overflow: hidden; flex-shrink: 0; width: 400px; height: 250px;}
+		.wrap-slider .slide img{width: 100%;}
 	</style>
 </head>
 
 <body>
 
   <div class="wrap-slider">
-    <ul class="slider">
-      <li><img src="https://source.unsplash.com/collection/1" alt=""></li>
-      <li><img src="https://source.unsplash.com/collection/2" alt=""></li>
-      <li><img src="https://source.unsplash.com/collection/3" alt=""></li>
-      <li><img src="https://source.unsplash.com/collection/4" alt=""></li>
-      <li><img src="https://source.unsplash.com/collection/5" alt=""></li>
-    </ul>
+    <ul class="slider basic" data-slider="basic">
+      <li class="slide active"><img src="https://source.unsplash.com/collection/1" alt=""></li>
+      <li class="slide"><img src="https://source.unsplash.com/collection/2" alt=""></li>
+      <li class="slide"><img src="https://source.unsplash.com/collection/3" alt=""></li>
+      <li class="slide"><img src="https://source.unsplash.com/collection/4" alt=""></li>
+      <li class="slide"><img src="https://source.unsplash.com/collection/5" alt=""></li>
+		</ul>
+		<div class="arrow">
+			<button class="prev">이전</button>
+			<button class="next">다음</button>
+		</div>
   </div>
 
 	<div id="wrap">
