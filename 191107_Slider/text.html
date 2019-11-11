@@ -29,28 +29,45 @@
 		.txt_num .txt {display: inline-block; font-size: 20px; line-break: 1.3em;}
 
 		/* Slider */
-		.wrap-slider{overflow: hidden; width: 600px;}
+		.wrap-slider{overflow: hidden; position: relative; width: 400px; height: 250px; padding: 30px 100px;}
 		.wrap-slider .slider{display: flex;}
-		.wrap-slider .slide{overflow: hidden; flex-shrink: 0; width: 400px; height: 250px;}
-		.wrap-slider .slide img{width: 100%;}
+		.wrap-slider .slide{flex-shrink: 0; position: relative; width: 400px; height: 250px; }
+		.wrap-slider .slide img{width: 100%; height: 100%; }
+
+		/* active, prev, next */
+		.wrap-slider[data-slider="basic"] .slide[data-slide="clone"],
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"],
+		.wrap-slider[data-slider="basic"] .slide[data-slide="prev"],
+		.wrap-slider[data-slider="basic"] .slide[data-slide="next"]{opacity: 1; }
+		
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"]{position: relative; z-index: 3; height: 310px; margin: -30px 0;}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"] img{position: absolute; left: 50%; transform: translateX(-50%);}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"] img{width: auto;}
+		
+		.wrap-slider .slide:before{position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); content: ''; opacity: 1; transition: 0.3s ease;}
+		.wrap-slider .slide[data-slide="active"]:before{opacity: 0;}
 	</style>
 </head>
 
 <body>
 
-  <div class="wrap-slider">
-    <ul class="slider basic" data-slider="basic">
-      <li class="slide active"><img src="https://source.unsplash.com/collection/1" alt=""></li>
-      <li class="slide"><img src="https://source.unsplash.com/collection/2" alt=""></li>
-      <li class="slide"><img src="https://source.unsplash.com/collection/3" alt=""></li>
-      <li class="slide"><img src="https://source.unsplash.com/collection/4" alt=""></li>
-      <li class="slide"><img src="https://source.unsplash.com/collection/5" alt=""></li>
-		</ul>
-		<div class="arrow">
-			<button class="prev">이전</button>
-			<button class="next">다음</button>
+  <div class="area-slider">
+		<div class="wrap-slider" data-slider="basic">
+		    <div class="view-slider">
+					<ul class="slider basic">
+						<li class="slide"><img src="https://source.unsplash.com/collection/1" alt=""></li>
+						<li class="slide"><img src="https://source.unsplash.com/collection/2" alt=""></li>
+						<li class="slide"><img src="https://source.unsplash.com/collection/3" alt=""></li>
+						<li class="slide"><img src="https://source.unsplash.com/collection/4" alt=""></li>
+						<li class="slide"><img src="https://source.unsplash.com/collection/5" alt=""></li>
+					</ul>
+				</div>
+		  </div>
+			<div class="arrow">
+				<button class="prev">이전</button>
+				<button class="next">다음</button>
+			</div>
 		</div>
-  </div>
 
 	<div id="wrap">
 		<div class="box">
@@ -206,6 +223,7 @@
 			<p class="txt_num">
 				<span class="txt" data-text="time"></span>
 				<span class="txt" data-text="facebook"></span>
+				<span class="txt" data-text="twitter"></span>
 			</p>
 		</div>
 	</div>

@@ -7,9 +7,9 @@ function log(code) {
 (function startRollingText(){
   const texts = document.querySelectorAll("[data-text]");
   // 롤링 텍스트 json 배열 생성
-  const rollingTexts = upData(upData(elemList(texts),
-                      "cont", el => el.elem.dataset.text),
-                      "scrollRange", () => false,
+  const rollingTexts = upData(upData(upData(elemList(texts),
+                      "cont", el => el.el.dataset.text),
+                      "scrollRange", () => false),
                       "done", () => false);
   log(rollingTexts);
   
@@ -35,20 +35,97 @@ function log(code) {
 // START: 슬라이더
 // 페이저, 컨트롤러, 루프, 프랙션, 오토
 (function startSlider(){
-  const $sliders = document.querySelectorAll("[data-slider]");
+  const $sliderWraps = document.querySelectorAll("[data-slider]");
   // 롤링 텍스트 json 배열 생성
-  const sliders = upData(upData(elemList($sliders),
-                  "slides", el => el.elem.children),                  
-                  "type", el => el.elem.dataset.slider,
-                  "scrollRange", () => false,
-                  "done", () => false);
-  log(sliders);
+  const sliderWraps = upData(upData(upData(upData(upData(upData(
+                  elemList($sliderWraps),              
+                  "type", elem => elem.el.dataset.slider),
+                  "slider", elem => elem.el.querySelector(".slider")),
+                  "slides", elem => elem.el.querySelectorAll(".slide")),
+                  "viewport", elem => elem.el.querySelector(".view-slider")),
+                  "activeNum", () => 0),
+                  "loop", () => true);
+  log(sliderWraps);
 
-  sliders.forEach((slider) => {
-    slider.elem.style.width = slider.slides[0].style.width
+  // let i = 0;
+  sliderWraps.forEach((sliderWrap) => {    
+    const view = sliderWrap.viewport,
+          slider = sliderWrap.slider,
+          slides = sliderWrap.slides,
+          btnArrow = sliderWrap.el.parentNode.querySelector(".arrow button"),
+          btnPrev = sliderWrap.el.parentNode.querySelector("button.prev"),
+          btnNext = sliderWrap.el.parentNode.querySelector("button.next");
+
+    let _activeNum = sliderWrap.activeNum;
+          
+    setDataPrevNext(slides, _activeNum);
+
+    //슬라이더 가로 사이즈 셋팅
+    slider.style = "width: "+view.offsetWidth * slides.length + "px; transform: translateX(-"+ view.offsetWidth +"px); transition: 0.5s ease-in-out;";
+    
+    
+    // loop일경우 처음과 끝 이어지게
+    if(sliderWrap.loop){
+      let clonePrev = slides[slides.length-1].cloneNode(true),
+          cloneNext = slides[0].cloneNode(true);
+      clonePrev.className += " clone";
+      cloneNext.className += " clone";
+      clonePrev.dataset.slide = "clone";
+      cloneNext.dataset.slide = "clone";
+
+      slider.insertBefore(cloneNext, slider.children[slides.length - 1].nextElementSibling);
+      slider.insertBefore(clonePrev, slider.children[0]);      
+    }
+
+    // 이전 다음 클릭시
+    btnPrev.addEventListener("click", () => {
+      // data-slide값 셋팅
+      resetDataset(slides, "slide");
+      if(_activeNum == 0){
+        _activeNum = slides.length - 1;        
+      }else{
+        _activeNum = _activeNum - 1;
+      }
+      // slider 이동
+      slider.style.transform = "translateX(-"+ view.offsetWidth * (_activeNum+1) +"px)";
+      setDataPrevNext(slides, _activeNum);
+    });
+    btnNext.addEventListener("click", () => {
+      // data-slide값 셋팅
+      resetDataset(slides, "slide");
+      if(_activeNum == slides.length - 1){
+        _activeNum = 0;
+      }else{
+        _activeNum = _activeNum + 1;
+      }
+      // slider 이동
+      slider.style.transform = "translateX(-"+ view.offsetWidth * (_activeNum+1) +"px)";
+      setDataPrevNext(slides, _activeNum);
+    });
   });
 })();
 // END: 슬라이더
+
+// active 넘버에 따라 prev, next 슬라이드 지정.
+function setDataPrevNext(slides, _activeNum){
+  const activePrevNum = _activeNum != 0 ? _activeNum - 1 : slides.length - 1,
+        activeNextNum = _activeNum != slides.length - 1 ? _activeNum + 1 : 0;
+
+  slides[_activeNum].dataset.slide = "active";
+  slides[activePrevNum].dataset.slide = "prev";
+  slides[activeNextNum].dataset.slide = "next";
+}
+
+function resetDataset(elems, datasetName){
+  for(const elem of elems){
+    elem.dataset[datasetName] = "";
+  }
+}
+
+
+
+
+
 
 // 해당 엘리먼트 오브젝트 포함하여 배열 생성
 function elemList(elems) {
@@ -56,13 +133,11 @@ function elemList(elems) {
     i = 0;
   for (const elem of elems) {
     new_list[i] = {},
-      new_list[i].elem = elem;
+      new_list[i].el = elem;
     i++;
   }
   return new_list;
 }
-
-
 
 // 오브젝트 리스트에 원하는 key, value값 삽입하여 데이터 완성
 function upData(objList, key, value) {
@@ -87,12 +162,14 @@ function chkScrRange(list) {
   let winH = window.innerHeight,
     winScrY = window.scrollY,
     bodyScrH = document.querySelector("body").scrollHeight,
-    z
-  elemScrTop = list.elem.offsetTop;
+    elemScrTop = list.el.offsetTop;
+  
   if (elemScrTop - winH / 2 < winScrY && winScrY < elemScrTop - 20) {
-    return true
-  } else if (bodyScrH - winH < elemScrTop && bodyScrH < winScrY + winH) {
-    return true
+    // 스크롤이 엘리먼트 범위에 들어올 때(엘리먼트 스크롤높이 기준 상하로 winH/2 범위)
+    return true;
+  } else if (bodyScrH - winH / 2 < elemScrTop && bodyScrH - 20 <= winScrY + winH) {
+    // 엘리먼트가 하단에 붙어있을 때(엘리먼트 위치가 바디 스크롤 하단 영역인지 구분 & 스크롤이 하단영역으로 왔는지 구분)
+    return true;
   } else {
     return false;
   }
@@ -102,11 +179,11 @@ function chkScrRange(list) {
 function fireRolling(text) {
   const commonIf = !text.done && chkScrRange(text);
   if (chkNum(text.cont) && commonIf) {
-    drawNumber(text.elem, 0, text.cont);
+    drawNumber(text.el, 0, text.cont);
     text.done = true;
   } else if (!chkNum(text.cont) && commonIf) {
-    drawNaN(text.elem, text.cont, 0);
-    showNaN(text.elem, text.cont, 0);
+    drawNaN(text.el, text.cont, 0);
+    showNaN(text.el, text.cont, 0);
     text.done = true;
   }
 }
