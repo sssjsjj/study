@@ -34,18 +34,16 @@
 		.wrap-slider .slide{flex-shrink: 0; position: relative; width: 400px; height: 250px; }
 		.wrap-slider .slide img{width: 100%; height: 100%; }
 
-		/* active, prev, next */
+		/* basic */
 		.wrap-slider[data-slider="basic"] .slide[data-slide="clone"],
 		.wrap-slider[data-slider="basic"] .slide[data-slide="active"],
 		.wrap-slider[data-slider="basic"] .slide[data-slide="prev"],
-		.wrap-slider[data-slider="basic"] .slide[data-slide="next"]{opacity: 1; }
-		
-		.wrap-slider[data-slider="basic"] .slide[data-slide="active"]{position: relative; z-index: 3; height: 310px; margin: -30px 0;}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="next"]{opacity: 1; }		
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"]{position: relative; z-index: 3; height: 310px; margin: -30px 0; transition: 0.3s ease;}
 		.wrap-slider[data-slider="basic"] .slide[data-slide="active"] img{position: absolute; left: 50%; transform: translateX(-50%);}
-		.wrap-slider[data-slider="basic"] .slide[data-slide="active"] img{width: auto;}
-		
-		.wrap-slider .slide:before{position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); content: ''; opacity: 1; transition: 0.3s ease;}
-		.wrap-slider .slide[data-slide="active"]:before{opacity: 0;}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"] img{width: auto;}	
+		.wrap-slider[data-slider="basic"] .slide:before{position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); content: ''; opacity: 1; transition: 0.3s ease;}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"]:before{opacity: 0;}
 	</style>
 </head>
 
@@ -64,8 +62,8 @@
 				</div>
 		  </div>
 			<div class="arrow">
-				<button class="prev">이전</button>
-				<button class="next">다음</button>
+				<button class="prev" data-btn="prev">이전</button>
+				<button class="next" data-btn="next">다음</button>
 			</div>
 		</div>
 
@@ -227,7 +225,7 @@
 			</p>
 		</div>
 	</div>
-	<script type="text/javascript" src="./text-repack.js"></script>
+	<script type="text/javascript" src="./study.js"></script>
 	<!-- <script type="text/javascript" src="./text-.js"></script> -->
 </body>
 </html>

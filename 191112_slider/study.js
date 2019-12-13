@@ -37,32 +37,26 @@ function log(code) {
 (function startSlider(){
   const $sliderWraps = document.querySelectorAll("[data-slider]");
   // 롤링 텍스트 json 배열 생성
-  const sliderWraps = upData(upData(upData(upData(upData(upData(
+  const sliderWraps = upData(upData(upData(upData(upData(
                   elemList($sliderWraps),              
                   "type", elem => elem.el.dataset.slider),
                   "slider", elem => elem.el.querySelector(".slider")),
                   "slides", elem => elem.el.querySelectorAll(".slide")),
-                  "viewport", elem => elem.el.querySelector(".view-slider")),
                   "activeNum", () => 0),
                   "loop", () => true);
   log(sliderWraps);
 
   // let i = 0;
   sliderWraps.forEach((sliderWrap) => {    
-    const view = sliderWrap.viewport,
+    const view = sliderWrap.el.querySelector(".view-slider"),
           slider = sliderWrap.slider,
           slides = sliderWrap.slides,
-          btnArrow = sliderWrap.el.parentNode.querySelector(".arrow button"),
-          btnPrev = sliderWrap.el.parentNode.querySelector("button.prev"),
-          btnNext = sliderWrap.el.parentNode.querySelector("button.next");
-
+          btnArrows = sliderWrap.el.parentNode.querySelectorAll(".arrow button");
     let _activeNum = sliderWrap.activeNum;
-          
     setDataPrevNext(slides, _activeNum);
 
     //슬라이더 가로 사이즈 셋팅
-    slider.style = "width: "+view.offsetWidth * slides.length + "px; transform: translateX(-"+ view.offsetWidth +"px); transition: 0.5s ease-in-out;";
-    
+    slider.style = "width: "+view.offsetWidth * slides.length + "px; transform: translateX(-"+ view.offsetWidth +"px); transition: 0.5s ease;";
     
     // loop일경우 처음과 끝 이어지게
     if(sliderWrap.loop){
@@ -77,36 +71,37 @@ function log(code) {
       slider.insertBefore(clonePrev, slider.children[0]);      
     }
 
-    // 이전 다음 클릭시
-    btnPrev.addEventListener("click", () => {
-      // data-slide값 셋팅
-      resetDataset(slides, "slide");
-      if(_activeNum == 0){
-        _activeNum = slides.length - 1;        
-      }else{
-        _activeNum = _activeNum - 1;
-      }
-      // slider 이동
-      slider.style.transform = "translateX(-"+ view.offsetWidth * (_activeNum+1) +"px)";
-      setDataPrevNext(slides, _activeNum);
-    });
-    btnNext.addEventListener("click", () => {
-      // data-slide값 셋팅
-      resetDataset(slides, "slide");
-      if(_activeNum == slides.length - 1){
-        _activeNum = 0;
-      }else{
-        _activeNum = _activeNum + 1;
-      }
-      // slider 이동
-      slider.style.transform = "translateX(-"+ view.offsetWidth * (_activeNum+1) +"px)";
-      setDataPrevNext(slides, _activeNum);
+    // 이전 다음 버튼 클릭 했을 때
+    btnArrows.forEach((btnArrow) => {
+      btnArrow.addEventListener("click", (e) => {
+        const btnData = btnArrow.dataset.btn;
+        let activeNum = newActiveNum(btnData, slides.length - 1, _activeNum);
+        _activeNum = activeNum;  //클릭한 버튼에 따라 active 슬라이드 index값 변환
+        
+        resetDataset(slides, "slide"); //슬라이드 dataset 초기화 
+        setDataPrevNext(slides, _activeNum); //active 슬라이드 셋팅
+        slider.style.transform = "translateX(-"+ view.offsetWidth * (_activeNum+1) +"px)"; //슬라이더 슬라이딩
+      });
     });
   });
 })();
 // END: 슬라이더
 
-// active 넘버에 따라 prev, next 슬라이드 지정.
+// prev, next 클릭시 변하는 active 넘버 반환
+function newActiveNum(data, last, activeNum){
+  if(activeNum == last && data == "next"){
+    activeNum = 0;
+  }else if (activeNum == 0 && data == "prev"){
+    activeNum = last;
+  }else if(data == "next"){
+    activeNum = activeNum + 1;
+  }else if(data == "prev"){
+    activeNum = activeNum - 1;
+  }
+  return activeNum;
+}
+
+// active 넘버에 따라 slide dataset 셋팅.
 function setDataPrevNext(slides, _activeNum){
   const activePrevNum = _activeNum != 0 ? _activeNum - 1 : slides.length - 1,
         activeNextNum = _activeNum != slides.length - 1 ? _activeNum + 1 : 0;
@@ -116,16 +111,12 @@ function setDataPrevNext(slides, _activeNum){
   slides[activeNextNum].dataset.slide = "next";
 }
 
+// dataset 초기화
 function resetDataset(elems, datasetName){
   for(const elem of elems){
     elem.dataset[datasetName] = "";
   }
 }
-
-
-
-
-
 
 // 해당 엘리먼트 오브젝트 포함하여 배열 생성
 function elemList(elems) {
@@ -218,5 +209,3 @@ function showNaN(elem, text, start) {
     }, 800 / text.length);
   }
 }
-
-// 슬라이더
