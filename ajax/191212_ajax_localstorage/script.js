@@ -1,22 +1,10 @@
 /*jshint esversion: 6 */
-/*
-1. 셋팅 버튼으로 레이어 불러오기
-2. 5개까지 선택해서 설정 완료 버튼 누르면 레이어 종료되면서 메인 리스트 선택 항목으로 교체
-3. 설정완료 항목은 localstorage로 저장
-4. 메인 페이지 새로 고침의 경우 localstorage 항목이 있으면 해당 내용으로 리스트 셋팅. 없으면 기본 항목으로 셋팅
-5. 셋팅 버튼으로 레이어 불러왔을 때 localstorage 항목 있으면 해당 항목 선택 상태. 없으면 기본 항목 선택 상태
-5. 기본 항목은 첫 번째부터 내 차 정보, 자기진단도우미, 보증 정보, 서비스 이력, 상용블루핸즈 이지만 기본 항목을 나중에 변경할 수 있도록 구성
-6. 레이어에서 초기화 버튼 클릭 시 기본 항목으로 선택
-7. 레이어 선택된 항목에는 순서대로 번호 노출, 선택 순서대로 번호 매김
-8. 선택 항목 해제시 번호 셋팅 다시. ex) 1,2,3,4,5 에서 2번 체크 해제 하면 1, 해제, 2,3,4 그리고 선택하면 5
-9. 5개 이상 선택은 막음
-*/
-
 (function(){
   // let httpRequest;
-  const $wrap = document.getElementById("wrap"),
-        $btnSetting = document.querySelector("[data-role='setting'] button"),        
-        $ajaxArea = document.querySelector("[data-role='ajax-area']");
+  const $btnSetting = document.querySelector("[data-role='setting'] button"),        
+        $ajaxArea = document.querySelector("[data-role='ajax-area']"),
+        $menuArea = document.querySelector(".box_icon_link .list_icon_link"),
+        btnSettingHTML = $btnSetting.parentElement.outerHTML;
 
   // 셋팅 버튼 클릭시
   $btnSetting.addEventListener("click", () => {
@@ -52,56 +40,117 @@
     httpRequest.open(how, what, true);
     httpRequest.send();
   }
-
   //ajax 로드 후 실행할 이벤트
   function afterAjax(){
     const $chkBoxes = document.querySelectorAll("input[type='checkbox']"),
-          $closeBtn = document.querySelector(".btn_close button");
+          $closeBtn = document.querySelector(".btn_close button"),
+          $setupBtn = document.querySelector("button[data-role='setting']"),
+          $resetBtn = document.querySelector("button[data-role='default']");
 
     let selectMenus = [],
-        menu = {"link" : "", "text" : ""};
+        defaultMenus = ["내 차 정보", "상용블루핸즈", "자가진단", "정비 예약", "긴급출동"];
 
     //레이어 팝업 체크박스 클릭 했을 때
     $chkBoxes.forEach($chkBox => {
-      $chkBox.addEventListener("click", (e) => {
-        // 클릭해서 체크 됐을 때.
-        if(e.target.checked){
-          // 5개 까지만 배열에 삽입.
-          if(selectMenus.length < 5){
-            selectMenus.push(e.target.title);
-          }else{// 5개 넘었을 땐 얼럿. 체크되지 않도록 막음.
-            alert("최대 5개까지 선택 가능합니다.");
-            e.target.checked = false;
-          }          
-        }else{// 체크해제되면 배열에서 제거
-          selectMenus.splice(selectMenus.indexOf(e.target.title),1);
-        }        
-        console.log(selectMenus);
-      });
-    });
-
-
-    // 레이어 닫기 클릭시 레이어 팝업 소스 제거
-    $closeBtn.addEventListener("click", (e) => {
-      if(selectMenus.length > 0){
-        const $menuArea = document.querySelector(".box_icon_link .list_icon_link"),
-         $customMenus = document.querySelectorAll(".box_icon_link .list_icon_link li:not([data-role='setting'])"),
-          customMenuHTML = $customMenus[0].outerHTML;
-
-        let i = 0;
-        // removeChild
-        // $menuArea.innerHTML = "";
+      const $menuText = $chkBox.parentElement.querySelector("span");
+      if(localStorage.getItem("selectMenu")){
+        let selectMenus = localStorage.getItem("selectMenu").split(",")
+            i = 1;
         selectMenus.forEach(selectMenu => {
-          console.log(selectMenu)
-          $menuArea.innerHTML += customMenuHTML;
-
-          document.querySelectorAll(".box_icon_link .list_icon_link li:not([data-role='setting'])")[i].innerText = selectMenus[i];
+          if(selectMenu == $menuText.innerHTML){
+            $chkBox.checked = true;
+            $menuText.innerHTML += "<span class='num'> "+ i +"</span>";
+          }
           i++;
         });
+      }else{
+        $chkBox.addEventListener("click", (e) => {
+          // 클릭해서 체크 됐을 때.
+          if(e.target.checked){
+            // 5개 까지만 배열에 삽입.
+            if(selectMenus.length < 5){
+              selectMenus.push(e.target.title);
+              $menuText.innerHTML += "<span class='num'> "+selectMenus.length+"</span>";
+            }else{// 5개 넘었을 땐 얼럿. 체크되지 않도록 막음.
+              alert("최대 5개까지 선택 가능합니다.");
+              e.target.checked = false;
+            }          
+          }else{// 체크해제되면 배열에서 제거
+            selectMenus.splice(selectMenus.indexOf(e.target.title),1);
+            $menuText.removeChild($menuText.childNodes[1])
+          }        
+          // console.log(selectMenus);
+        });
       }
-      $ajaxArea.innerHTML = "";
+    });
+
+    $resetBtn.addEventListener("click", (e) => {
+      $menuArea.innerHTML = "";
+      defaultMenus.forEach(defaultMenu => {
+        $menuArea.innerHTML += "<li><a href='#'>"+defaultMenu+"</a></li>";
+      });        
+      $menuArea.innerHTML += btnSettingHTML;
+      $ajaxArea.style = "display: none;";
+      $chkBoxes.forEach($chkBox => {
+        $chkBox.checked = false;
+        const $numText = $chkBox.parentElement.querySelector("span.num");
+        if($numText){
+          $numText.outerHTML ="";
+        }        
+      });
+      localStorage.removeItem("selectMenu");
+      selectMenus = [];
+    });
+
+    // 레이어 닫기 클릭시 레이어 팝업 소스 제거
+    $setupBtn.addEventListener("click", (e) => {
+      console.log(selectMenus);
+      if(selectMenus.length > 0){
+        $menuArea.innerHTML = "";
+        selectMenus.forEach(selectMenu => {          
+          localStorage.setItem("selectMenu", selectMenus);
+          console.log(selectMenu)
+          $menuArea.innerHTML += "<li><a href='#'>"+selectMenu+"</a></li>";
+        });        
+        $menuArea.innerHTML += btnSettingHTML;
+      }
+      $ajaxArea.style = "display: none;";
+    });
+
+    $closeBtn.addEventListener("click", (e) => {
+      if(!localStorage.getItem("selectMenu")){
+        $chkBoxes.forEach($chkBox => {
+          $chkBox.checked = false;
+        });
+      }
+      $ajaxArea.style = "display: none;";
     });
   }
 
+  //로드했을떄 이전에 선택했던 내용있으믄 그대로.
+  window.addEventListener('DOMContentLoaded', function(){
+    const storageMenu = localStorage.getItem("selectMenu");
+    if(storageMenu){
+      let selectMenus = storageMenu.split(",")
+      console.log(selectMenus)
+      
+      $menuArea.innerHTML = "";
+      selectMenus.forEach(selectMenu => {
+        console.log(selectMenu)
+        $menuArea.innerHTML += "<li><a href='#'>"+selectMenu+"</a></li>";
+      });        
+      $menuArea.innerHTML += btnSettingHTML;  
+    }
 
+    // 팝업도 안보이는 상태로 불러와서, 선택했던 내용 표시해주기
+    makeAjaxRequest($ajaxArea, "GET", "setting.html");
+    $ajaxArea.style = "display: none;";
+  });
 })();
+
+  //설정 후.
+  document.querySelector("body").addEventListener("click", (e) => {
+    if(e.target.parentElement.dataset.role === "setting" && document.querySelector("[data-role='ajax-area']")){
+      document.querySelector("[data-role='ajax-area']").style = "display: block;"
+    }
+  });
