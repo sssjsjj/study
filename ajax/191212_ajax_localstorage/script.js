@@ -15,14 +15,15 @@
 (function(){
   // let httpRequest;
   const $wrap = document.getElementById("wrap"),
-        $btnSetting = document.querySelector("[data-role='setting'] button"),
+        $btnSetting = document.querySelector("[data-role='setting'] button"),        
         $ajaxArea = document.querySelector("[data-role='ajax-area']");
-        $layer = document.querySelector(".layer");
 
+  // 셋팅 버튼 클릭시
   $btnSetting.addEventListener("click", () => {
-      makeAjaxRequest($layerWrap, "GET", "setting.html");
+      makeAjaxRequest($ajaxArea, "GET", "setting.html");
   });
 
+  // ajax
   function makeAjaxRequest(where, how, what){
     //JavaScript를 이용하여 서버로 보내는 HTTP request를 만들기 위해서는 그에 맞는 기능을 제공하는 Object의 인스턴스가 필요.
     //XMLHttpRequest 가 그러한 Object의 한 예
@@ -39,7 +40,7 @@
         if(httpRequest.readyState === XMLHttpRequest.DONE){
           if(httpRequest.status === 200){
             where.innerHTML = httpRequest.responseText;
-            layerClose();
+            afterAjax();
           }else{
             console.log("request에 뭔가 문제가 있댜.");
           }
@@ -52,28 +53,55 @@
     httpRequest.send();
   }
 
-  function layerClose(){
-    const $closeBtn = document.querySelector(".btn_close button");
+  //ajax 로드 후 실행할 이벤트
+  function afterAjax(){
+    const $chkBoxes = document.querySelectorAll("input[type='checkbox']"),
+          $closeBtn = document.querySelector(".btn_close button");
+
+    let selectMenus = [],
+        menu = {"link" : "", "text" : ""};
+
+    //레이어 팝업 체크박스 클릭 했을 때
+    $chkBoxes.forEach($chkBox => {
+      $chkBox.addEventListener("click", (e) => {
+        // 클릭해서 체크 됐을 때.
+        if(e.target.checked){
+          // 5개 까지만 배열에 삽입.
+          if(selectMenus.length < 5){
+            selectMenus.push(e.target.title);
+          }else{// 5개 넘었을 땐 얼럿. 체크되지 않도록 막음.
+            alert("최대 5개까지 선택 가능합니다.");
+            e.target.checked = false;
+          }          
+        }else{// 체크해제되면 배열에서 제거
+          selectMenus.splice(selectMenus.indexOf(e.target.title),1);
+        }        
+        console.log(selectMenus);
+      });
+    });
+
+
+    // 레이어 닫기 클릭시 레이어 팝업 소스 제거
     $closeBtn.addEventListener("click", (e) => {
-      document.querySelector("data-role='ajax-area'").innerHTML = "";
+      if(selectMenus.length > 0){
+        const $menuArea = document.querySelector(".box_icon_link .list_icon_link"),
+         $customMenus = document.querySelectorAll(".box_icon_link .list_icon_link li:not([data-role='setting'])"),
+          customMenuHTML = $customMenus[0].outerHTML;
+
+        let i = 0;
+        // removeChild
+        // $menuArea.innerHTML = "";
+        selectMenus.forEach(selectMenu => {
+          console.log(selectMenu)
+          $menuArea.innerHTML += customMenuHTML;
+
+          document.querySelectorAll(".box_icon_link .list_icon_link li:not([data-role='setting'])")[i].innerText = selectMenus[i];
+          i++;
+        });
+      }
+      $ajaxArea.innerHTML = "";
     });
   }
+
+
 })();
-
-
-
-function menuSelect(){
-  let defaultMenus = [],
-  selectMenus = [],
-  menu = {"link" : "", "text" : ""};
-}
-
-
-
-function layerShow(){
-  const $openBtn = document.querySelector("[data-role='setting'] button"),
-        $targetLayer = document.querySelector(".layer");
-        console.log($targetLayer)
-  let removeClass = $targetLayer.className.replace(" hidden", "");
-  $openBtn.addEventListener("click", () => $targetLayer.className = removeClass)
-}
