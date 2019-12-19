@@ -7,7 +7,7 @@
 
   const countHTML = { open: "<span class='num'>", close: "</span>" },
         listHTML = { open: "<li><a href='#'>", close: "</a></li>" },
-        storageName = "selectMenu";
+        storageName = "storedMenu";
 
   // 셋팅 버튼 클릭시
   $btnSetting.addEventListener("click", () => {
@@ -44,7 +44,8 @@
     const $chkBoxes = document.querySelectorAll("input[type='checkbox']"),
           $closeBtn = document.querySelector(".btn_close button"),
           $setupBtn = document.querySelector("button[data-role='setting']"),
-          $resetBtn = document.querySelector("button[data-role='default']");
+          $resetBtn = document.querySelector("button[data-role='default']"),
+          $defaultSetBtn = document.querySelector("button[data-role='defaultSet']");
 
     let selectMenus = [],
         defaultMenus = ["내 차 정보", "상용블루핸즈", "자가진단", "정비 예약", "긴급출동"];
@@ -53,8 +54,8 @@
     $chkBoxes.forEach($chkBox => {
       const $menuText = $chkBox.parentElement.querySelector("span");
       // 이전에 설정해놓은 메뉴가 있을 경우엔 그대로 체크박스 셋팅
-      if(localStrgGet(storageName)){
-        selectMenus = localStrgGet(storageName).split(",")
+      if(localStorage.getItem("storedMenu")){
+        selectMenus = localStorage.getItem("storedMenu").split(",")
         let  i = 1;
         selectMenus.forEach(selectMenu => {
           if(selectMenu == $menuText.innerHTML){
@@ -84,33 +85,55 @@
       });
     });
 
+    $defaultSetBtn.addEventListener("click", (e) => {
+      defaultMenus = selectMenus;
+      localStorage.setItem("storedDefault", defaultMenus);
+      console.log(defaultMenus)
+    });
+
     // 초기화 버튼 클릭
     $resetBtn.addEventListener("click", (e) => {
-      drawListFuncs(defaultMenus);
-
       $chkBoxes.forEach($chkBox => {
         $chkBox.checked = false;
         const $numText = $chkBox.parentElement.querySelector("span.num");
         if($numText){
           $numText.outerHTML ="";
         }        
+        selectMenus = [];
+                
+        const $menuText = $chkBox.parentElement.querySelector("span");
+        if(localStorage.getItem("storedDefault")){
+          $chkBox.checked = false;
+
+          selectMenus = localStorage.getItem("storedDefault").split(",")
+          let  i = 1;
+          selectMenus.forEach(selectMenu => {
+            if(selectMenu == $menuText.innerHTML){
+              $chkBox.checked = true;
+              $menuText.innerHTML += countHTML.open + i + countHTML.close;
+            }
+            i++;
+          });
+        }
       });
-      localStrgRemove(storageName);
-      selectMenus = [];
     });
 
     // 설정 완료 버튼 클릭 
     $setupBtn.addEventListener("click", (e) => {
       console.log(selectMenus);
-      if(selectMenus.length > 0){
+      if(selectMenus.length > 0){        
+        localStorage.setItem("storedMenu", selectMenus);
         drawListFuncs(selectMenus);
+      }else{
+        drawListFuncs(defaultMenus);
+        localStorage.removeItem("storedMenu");
       }
       addClass($ajaxArea, "hidden");
     });
 
     // 레이어 닫기 클릭
     $closeBtn.addEventListener("click", (e) => {
-      if(!localStrgGet(storageName)){
+      if(!localStorage.getItem("storedMenu")){
         $chkBoxes.forEach($chkBox => {
           $chkBox.checked = false;
         });
@@ -121,7 +144,7 @@
 
   //페이지 로드했을떄 이전에 선택했던 내용있으믄 그대로.
   window.addEventListener('DOMContentLoaded', function(){
-    const storageMenu = localStrgGet(storageName);
+    const storageMenu = localStorage.getItem("storedMenu");
     if(storageMenu){
       let selectMenus = storageMenu.split(",")
       console.log(selectMenus)
@@ -159,14 +182,6 @@ function addClass(el, className){
 
 function removeInnerHTML(el){
   el.innerHTML = "";
-}
-
-function localStrgGet(storageName){
-  localStorage.getItem(storageName);
-}
-
-function localStrgRemove(storageName){
-  localStorage.removeItem(storageName);
 }
 
 function loopHTML(arr, el, openHTML, closeHTML){
