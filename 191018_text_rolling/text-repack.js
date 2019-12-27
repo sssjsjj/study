@@ -4,7 +4,7 @@ function log(code) {
 }
 
 // 롤링 텍스트 이벤트
-const texts = document.querySelectorAll("[data-text]");
+const texts = document.querySelectogrAll("[data-text]");
 // 롤링 텍스트 json 배열 생성
 const rollingTexts = upData(upData(elemList(texts),
     "cont", el => el.elem.dataset.text),
