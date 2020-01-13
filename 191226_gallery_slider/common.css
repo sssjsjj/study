@@ -29,14 +29,14 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .gallery_view .header .btns_posi {position:absolute; top:0; right:48px; font-size:0; line-height:0;}
 .gallery_view .header .btn_gate, .gallery_view .header .btn_share, .gallery_view .header .btn_close {float:left; width:80px; height:80px; margin:0 2px;}
 .gallery_view .header .btn_gate {margin-left:24px;}
-.gallery_view .header .btn_gate a, .gallery_view .header .btn_share a, .gallery_view .header .btn_close a {display:block; height:80px; background:url('/kr/images/product/ico_showroom.svg') no-repeat; opacity:0.7;}
+.gallery_view .header .btn_gate a, .gallery_view .header .btn_share a, .gallery_view .header .btn_close a {display:block; height:80px; background:url('https://www-trucknbus.hyundai.com/kr/images/product/ico_showroom.svg') no-repeat; opacity:0.7;}
 .gallery_view .header .btn_gate a {background-position:0 -120px;}
 .gallery_view .header .btn_share a {background-position:-600px -80px;}
 .gallery_view .header .btn_close a {background-position:-80px -120px;}
 .gallery_view .header .btn_gate a:hover, .gallery_view .header .btn_gate a:focus, .gallery_view .header .btn_share a:hover, .gallery_view .header .btn_share a:focus, .gallery_view .header .btn_close a:hover, .gallery_view .header .btn_close a:focus {opacity:1;}
 .gallery_view .header .btn_thumb {float:left;}
 .gallery_view .header .btn_thumb button {position:relative; padding-right:26px; height:80px; color:#fff; font-family:'HyundaiSansTextKRBold'; line-height:28px;}
-.gallery_view .header .btn_thumb button:after {content:''; position:absolute; top:50%; right:0; width:18px; height:18px; margin:-9px 0 0 0; background:url('/kr/images/product/ico_showroom.svg') no-repeat -160px -120px;}
+.gallery_view .header .btn_thumb button:after {content:''; position:absolute; top:50%; right:0; width:18px; height:18px; margin:-9px 0 0 0; background:url('https://www-trucknbus.hyundai.com/kr/images/product/ico_showroom.svg') no-repeat -160px -120px;}
 .gallery_view .header .btn_thumb.on button:after {background-position:-160px -138px;}
 
 .gallery_view .galleryBody {width:100%; height:100%; padding-top:80px;}
@@ -69,7 +69,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .galleryCont .gallerySlide_wrap .slide_list .module .img_wrap {position:absolute; display:block; width:100%; height:100%; background-repeat:no-repeat; background-position:50%; background-size:cover;}
 .galleryCont .gallerySlide_wrap .slide_list .module .img_wrap img {width: 100%;}
 .galleryCont .gallerySlide_wrap .slide_list .module .img_wrap:after {content:''; position:absolute; left:0; bottom:0; width:100%; height:100%; height:334px; opacity: 0.4; background: rgba(0, 0, 0, 1); background: -webkit-linear-gradient(bottom,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0)); background: -o-linear-gradient(bottom,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0)); background: -moz-linear-gradient(bottom,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0)); background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));}
-.galleryCont .gallerySlide_wrap .slide_list .module .img_wrap .btn_movie {position:absolute; top:50%; left:50%; width:80px; height:80px; margin:-40px 0 0 -40px; background:url('/kr/images/common/icon_all.svg') no-repeat -359px -600px; z-index:10;}
+.galleryCont .gallerySlide_wrap .slide_list .module .img_wrap .btn_movie {position:absolute; top:50%; left:50%; width:80px; height:80px; margin:-40px 0 0 -40px; background:url('https://www-trucknbus.hyundai.com/kr/images/common/icon_all.svg') no-repeat -359px -600px; z-index:10;}
 .galleryCont .gallerySlide_wrap .slide_list .module .img_wrap .btn_movie:hover, .galleryCont .gallerySlide_wrap .slide_list .module .img_wrap .btn_movie:focus {background-position:-439px -600px;}
 .galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap {position:relative; width:100%; height:100%;}
 .galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap .inner {display:table; width:100%; height:100%;}
@@ -84,7 +84,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .galleryCont .gallerySlide_wrap .btn_arrow.next {right:0;}
 .galleryCont .gallerySlide_wrap .btn_arrow .btn_prev .ico,
 .galleryCont .gallerySlide_wrap .btn_arrow .btn_next .ico {width:40px; height:80px;}
-.galleryCont .gallerySlide_wrap .btn_arrow .btn_prev .ico:after, .galleryCont .gallerySlide_wrap .btn_arrow .btn_next .ico:after {top:0; width:40px; height:80px; margin:0; background:url('/kr/images/common/icon_all.svg') no-repeat;}
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_prev .ico:after, .galleryCont .gallerySlide_wrap .btn_arrow .btn_next .ico:after {top:0; width:40px; height:80px; margin:0; background:url('https://www-trucknbus.hyundai.com/kr/images/common/icon_all.svg') no-repeat;}
 .galleryCont .gallerySlide_wrap .btn_arrow .btn_prev .ico:after {background-position:0 0;}
 .galleryCont .gallerySlide_wrap .btn_arrow .btn_next .ico:after {background-position:-40px 0;}
 
@@ -111,13 +111,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .galleryCont .thumbCont .slide_list .item .img_wrap {position:relative;}
 .galleryCont .thumbCont .slide_list .item.on .img_wrap:after{content:'';display:block;position:absolute;top:0;width:100%;height:100%;border:4px solid #fff;background:#35719E;z-index:10;opacity:0.6;} /* 180726_추가 */
 .galleryCont .thumbCont .slide_list .item .img_wrap img {max-width:100%;}
-.galleryCont .thumbCont .slide_list .item .img_wrap .btn_movie {position:absolute; top:50%; left:50%; width:40px; height:40px; margin:-20px 0 0 -20px; background:url('/kr/images/common/icon_all.svg') no-repeat -357px -680px;}
+.galleryCont .thumbCont .slide_list .item .img_wrap .btn_movie {position:absolute; top:50%; left:50%; width:40px; height:40px; margin:-20px 0 0 -20px; background:url('https://www-trucknbus.hyundai.com/kr/images/common/icon_all.svg') no-repeat -357px -680px;}
 
 .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow {position:absolute; top:50%; width:50px; height:50px; margin-top:-25px;}
 .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow.prev {left:0;}
 .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow.next {right:0;}
 .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_prev .ico, .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_next .ico {width:50px; height:50px;}
-.galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_prev .ico:after, .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_next .ico:after {top:0; width:50px; height:50px; margin:0; background:url('/kr/images/product/ico_showroom.svg') no-repeat;}
+.galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_prev .ico:after, .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_next .ico:after {top:0; width:50px; height:50px; margin:0; background:url('https://www-trucknbus.hyundai.com/kr/images/product/ico_showroom.svg') no-repeat;}
 .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_prev .ico:after {background-position:0 -340px;}
 .galleryCont .thumbCont .thumbSlide_wrap .btn_arrow .btn_next .ico:after {background-position:-50px -340px;}
 
