@@ -104,7 +104,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .galleryCont .thumbCont .slide_list {}
 .galleryCont .thumbCont .slide_list:after {content:''; display:table; clear:both;}
 /*.galleryCont .thumbCont .slide_list .item {float:left; width:270px; margin:0 20px;}*/
-.galleryCont .thumbCont .slide_list .item {float:left; width:270px; margin:2px 20px;} /* 180718_웹접근성 수정 */
+.galleryCont .thumbCont .slide_list .item {float:left; width:162px; margin:2px 12px;} /* 180718_웹접근성 수정 */
 .galleryCont .thumbCont .slide_list .item a{display:block;}
 .galleryCont .thumbCont .slide_list .item a:focus,
 .galleryCont .thumbCont .slide_list .item a:active{outline-style:dotted;}
@@ -125,3 +125,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /* 갤러�???? ?��????�� ?�� */
 .gallery_open {overflow:hidden; overflow-y:scroll}
+
+button{cursor: pointer;}
+.list_arrow{position: absolute; top:0;}
