@@ -22,13 +22,71 @@
     </div>
   </div>
   <div class="galleryBody">
+    <div class="galleryCont">      
+      <div class="area-slider">
+        <div class="wrap-slider" data-slider="basic">
+          <div class="view-slider">
+            <ul class="slider basic">
+              <li class="slide"><img src="./img/gallery1.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery2.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery3.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery4.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery5.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery6.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery7.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery8.jpg" alt=""></li>
+            </ul>
+          </div>
+        </div>
+        <div class="arrow">
+          <button class="prev" data-btn="prev">이전</button>
+          <button class="next" data-btn="next">다음</button>
+        </div>
+      </div>
+      <div class="thumbCont" data-role="layertarget" data-index="0">
+        <div class="area-slider">
+					<div class="wrap-slider" data-slider="basic">
+						<div class="view-slider">
+							<ul class="slider basic">
+								<li class="slide"><img src="./img/gallery1.jpg" alt=""></li>
+								<li class="slide"><img src="./img/gallery2.jpg" alt=""></li>
+								<li class="slide"><img src="./img/gallery3.jpg" alt=""></li>
+								<li class="slide"><img src="./img/gallery4.jpg" alt=""></li>
+								<li class="slide"><img src="./img/gallery5.jpg" alt=""></li>
+								<li class="slide"><img src="./img/gallery6.jpg" alt=""></li>
+								<li class="slide"><img src="./img/gallery7.jpg" alt=""></li>
+								<li class="slide"><img src="./img/gallery8.jpg" alt=""></li>
+							</ul>
+						</div>
+					</div>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+
+<!--  
+<div class="gallery_view">
+  <div class="header">
+    <div class="inner">
+      <div class="btns_posi">
+        <div class="btn_thumb">
+          <p class="btn_open">
+            <button type="button" data-role="layertoggle" data-index="0"><span class="now" id="uiCurrentIndex">1</span> / <span>9</span></button>
+          </p>
+        </div>
+        <div class="btn_close" data-button="layerclose"> <a href="#" role="button" title="갤러리 닫기"><span class="sr_only">Close</span></a> </div>
+      </div>
+    </div>
+  </div>
+  <div class="galleryBody">
     <div class="galleryCont">
       <div class="gallerySlide_wrap">
         <div class="gallerySlide type_1">
           <div class="slide_list">
             <div class="item 1">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery1.jpg"></span><!-- 이미지 경로 -->
+                <span class="img_wrap"><img src="./img/gallery1.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -43,7 +101,7 @@
             </div>
             <div class="item 2">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery2.jpg"></span>
+                <span class="img_wrap"><img src="./img/gallery2.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -58,7 +116,7 @@
             </div>
             <div class="item 3">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery3.jpg"></span>
+                <span class="img_wrap"><img src="./img/gallery3.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -73,7 +131,7 @@
             </div>
             <div class="item 4">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery4.jpg"></span>
+                <span class="img_wrap"><img src="./img/gallery4.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -88,7 +146,7 @@
             </div>
             <div class="item 5">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery5.jpg"></span>
+                <span class="img_wrap"><img src="./img/gallery5.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -103,7 +161,7 @@
             </div>
             <div class="item 6">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery6.jpg"></span>
+                <span class="img_wrap"><img src="./img/gallery6.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -118,7 +176,7 @@
             </div>
             <div class="item 7">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery7.jpg"></span>
+                <span class="img_wrap"><img src="./img/gallery7.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -133,7 +191,7 @@
             </div>
             <div class="item 8">
               <div class="module dark">
-                <span class="img_wrap"><img src="./gallery8.jpg"></span>
+                <span class="img_wrap"><img src="./img/gallery8.jpg"></span>
                 <div class="txt_wrap">
                   <div class="inner">
                     <div class="align_cont btm">
@@ -148,7 +206,7 @@
             </div>
           </div>
         </div>
-        <ul class="list_arrow"><!-- 20191210 -->
+        <ul class="list_arrow">
           <li class="type_prev"><button type="button">이전</button></li>
           <li class="type_next"><button type="button">다음</button></li>
         </ul>
@@ -159,14 +217,14 @@
             <div class="slide_list">
               <div class="item on"><a href="#">
                 <div class="module">
-                  <div class="img_wrap"><img src="./gallery1.jpg" alt="메가트럭-갤러리-외부-01">
+                  <div class="img_wrap"><img src="./img/gallery1.jpg" alt="메가트럭-갤러리-외부-01">
                   </div>
                 </div>
                 </a> </div>
               <div class="item ">
                 <a href="#">
                   <div class="module">
-                    <div class="img_wrap"><img src="./gallery2.jpg" alt="메가트럭-갤러리-외부-02">
+                    <div class="img_wrap"><img src="./img/gallery2.jpg" alt="메가트럭-갤러리-외부-02">
                     </div>
                   </div>
                 </a>
@@ -174,7 +232,7 @@
               <div class="item ">
                 <a href="#">
                   <div class="module">
-                    <div class="img_wrap"><img src="./gallery3.jpg" alt="메가트럭-갤러리-외부-03">
+                    <div class="img_wrap"><img src="./img/gallery3.jpg" alt="메가트럭-갤러리-외부-03">
                     </div>
                   </div>
                 </a>
@@ -182,7 +240,7 @@
               <div class="item ">
                 <a href="#">
                   <div class="module">
-                    <div class="img_wrap"><img src="./gallery4.jpg" alt="메가트럭-갤러리-외부-04">
+                    <div class="img_wrap"><img src="./img/gallery4.jpg" alt="메가트럭-갤러리-외부-04">
                     </div>
                   </div>
                 </a>
@@ -190,7 +248,7 @@
               <div class="item ">
                 <a href="#">
                   <div class="module">
-                    <div class="img_wrap"><img src="./gallery5.jpg" alt="메가트럭-갤러리-외부-05">
+                    <div class="img_wrap"><img src="./img/gallery5.jpg" alt="메가트럭-갤러리-외부-05">
                     </div>
                   </div>
                 </a>
@@ -198,7 +256,7 @@
               <div class="item ">
                 <a href="#">
                   <div class="module">
-                    <div class="img_wrap"><img src="./gallery6.jpg" alt="메가트럭-갤러리-외부-06">
+                    <div class="img_wrap"><img src="./img/gallery6.jpg" alt="메가트럭-갤러리-외부-06">
                     </div>
                   </div>
                 </a>
@@ -206,7 +264,7 @@
               <div class="item ">
                 <a href="#">
                   <div class="module">
-                    <div class="img_wrap"><img src="./gallery7.jpg" alt="메가트럭-갤러리-외부-07">
+                    <div class="img_wrap"><img src="./img/gallery7.jpg" alt="메가트럭-갤러리-외부-07">
                     </div>
                   </div>
                 </a>
@@ -214,7 +272,7 @@
               <div class="item ">
                 <a href="#">
                   <div class="module">
-                    <div class="img_wrap"><img src="./gallery8.jpg" alt="메가트럭-갤러리-외부-08">
+                    <div class="img_wrap"><img src="./img/gallery8.jpg" alt="메가트럭-갤러리-외부-08">
                     </div>
                   </div>
                 </a>
@@ -231,7 +289,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <script type="text/javascript" src="script.js"></script>
 </body>

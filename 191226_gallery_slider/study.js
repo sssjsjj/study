@@ -1,96 +1,53 @@
-/*jshint esversion: 6*/
-
-/************
-  생성자 함수들
-************/
-//버튼 클릭 생성자 함수
-function ClickButtons(name) {
-  this.name = name;
+/*jshint esversion: 6 */
+function log(code) {
+  console.log(code);
 }
-ClickButtons.prototype.click = function(callback) {
-  this.name.forEach(el => {
-    el.addEventListener("click", ()=>{
-      callback(el);
+
+// START: 롤링 텍스트 이벤트
+(function startRollingText(){
+  const texts = document.querySelectorAll("[data-text]");
+  // 롤링 텍스트 json 배열 생성
+  const rollingTexts = upData(upData(upData(elemList(texts),
+                      "cont", el => el.el.dataset.text),
+                      "scrollRange", () => false),
+                      "done", () => false);
+  log(rollingTexts);
+  
+  // 텍스트 롤링 시작!
+  rollingTexts.forEach((rollingText) => {
+    fireRolling(rollingText);
+  
+    let scrolling = false;
+    window.addEventListener("scroll", () => {
+      scrolling = true;
     });
-  });    
-};
-
-/************
-  미니 함수들
-************/
-// 클래스명 추가
-function addClass(el, className){
-  el.className += " " + className;
-}
-// 클래스명 제거
-function removeClass(el, className){
-  el.className = el.className.replace(" " + className,"");
-}
-// 클래스값 가지고 있는지 체크
-function hasClass(el, className){
-  let arr = el.className.split(" ");
-  if(arr.indexOf(className) > -1){
-    return true;
-  }else{
-    return false;
-  }
-}
-// 속성값 가지고 있는 엘리먼트
-function getElByAttr(els, attrName, attrValue){
-  let that;
-  els.forEach(el => {
-    if(el.attributes[attrName].value === attrValue){
-      that = el;
-    }
+  
+    setInterval(() => {
+      if (scrolling) {
+        scrolling = false;
+        fireRolling(rollingText);
+      }
+    }, 150);
   });
-  return that;
-}
-
-/************
-  재료들로 DOM 콘츄롤 
-************/
-// EVENT! 토글 버튼 클릭 시
-const togLayerBtns = document.querySelectorAll("[data-role*='layertoggle']"),
-      togLayerBtn = new ClickButtons(togLayerBtns),
-      togLayers = document.querySelectorAll("[data-role*='layertarget']");
-
-togLayerBtn.click((el)=>{
-  let i = el.dataset.index,
-      thisLayer = getElByAttr(togLayers, "data-index", i);
-  if(hasClass(thisLayer, "open")){
-    removeClass(thisLayer, "open");
-  }else{
-    addClass(thisLayer, "open");
-  }
-});
-// EVENT! 슬라이더
-
-
+})();
+// END: 롤링 텍스트 이벤트
 
 // START: 슬라이더
 // 페이저, 컨트롤러, 루프, 프랙션, 오토
 (function startSlider(){
-  const dataSliders = document.querySelectorAll("[data-slider]");
+  const $sliderWraps = document.querySelectorAll("[data-slider]");
   // 롤링 텍스트 json 배열 생성
-  // 해당 엘리먼트 오브젝트 포함하여 배열 생성
+  const sliderWraps = upData(upData(upData(upData(upData(
+                  elemList($sliderWraps),              
+                  "type", elem => elem.el.dataset.slider),
+                  "slider", elem => elem.el.querySelector(".slider")),
+                  "slides", elem => elem.el.querySelectorAll(".slide")),
+                  "activeNum", () => 0),
+                  "loop", () => true);
+  log(sliderWraps);
 
-  let sliderWraps = [],
-      i = 0;
-  for (const dataSlider of dataSliders) {
-    sliderWraps[i] = {},
-      sliderWraps[i].el = dataSlider;
-    i++;
-  }
-
-  sliderWraps.forEach(slider => {
-    slider.type = slider.el.dataset.slider;
-    slider.slider = slider.el.querySelector(".slider");
-    slider.slides = slider.el.querySelectorAll(".slide");
-    slider.activeNum = 0;
-    slider.loop = true;
-  });
-
-  sliderWraps.forEach(sliderWrap => {    
+  // let i = 0;
+  sliderWraps.forEach((sliderWrap) => {    
     const view = sliderWrap.el.querySelector(".view-slider"),
           slider = sliderWrap.slider,
           slides = sliderWrap.slides,
@@ -161,8 +118,26 @@ function resetDataset(elems, datasetName){
   }
 }
 
+// 해당 엘리먼트 오브젝트 포함하여 배열 생성
+function elemList(elems) {
+  let new_list = [],
+    i = 0;
+  for (const elem of elems) {
+    new_list[i] = {},
+      new_list[i].el = elem;
+    i++;
+  }
+  return new_list;
+}
 
-
+// 오브젝트 리스트에 원하는 key, value값 삽입하여 데이터 완성
+function upData(objList, key, value) {
+  let new_list = objList;
+  new_list.forEach(elem => {
+    elem[key] = value(elem);
+  });
+  return new_list;
+}
 
 // 숫자라면 true를 줘
 function chkNum(value) {

@@ -1,26 +1,5 @@
 @charset "utf-8";
 
-*, *:after, *:before {-webkit-box-sizing:border-box; box-sizing:border-box;}
-html, body {-webkit-font-smoothing:antialiased; -webkit-text-size-adjust:none; text-size-adjust:none;}
-html {overflow-y:auto}
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, textarea, p, blockquote, table, th, td, input, select, textarea, button {margin:0; padding:0}
-body, input, textarea, select, button, table {color:#222; font-size:18px; font-family:'Malgun Gothic', Dotum, '돋움', AppleGothicNeoSD, 'Apple SD 산돌고딕 Neo', Gulim, '굴림',arial, sans-serif; line-height:28px}
-em {font-style:normal}
-fieldset, img {border:0 none}
-img {vertical-align:middle}
-dl, ul, ol, menu, li {list-style:none}
-input::-ms-clear {display:none}
-button {border:0 none; border-radius:0; background-color:transparent; cursor:pointer}
-a {color:inherit; text-decoration:none}
-a:hover,
-a:focus,
-a:active {background-color:transparent; text-decoration:underline;}
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display:block}
-
-.blind {position:absolute; top:-9999em}
-.sr_only{display:inline-block;position:absolute;z-index:-10;width:0 !important;height:0 !important;overflow:hidden !important;font-size:medium;line-height:normal;word-break:break-all;} /* ?���?????��?��?�� 처리?�� */
-
-
 .gallery_view {position:fixed; top:0; right:0; bottom:0; left:0; background-color:#fff; z-index:900;}
 .gallery_view .header {position:fixed; top:0; width:100%; min-width:320px; height:80px; background-color:#35719E; z-index:10;}
 .gallery_view .header .inner {padding:0 50px;}
@@ -35,7 +14,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .gallery_view .header .btn_close a {background-position:-80px -120px;}
 .gallery_view .header .btn_gate a:hover, .gallery_view .header .btn_gate a:focus, .gallery_view .header .btn_share a:hover, .gallery_view .header .btn_share a:focus, .gallery_view .header .btn_close a:hover, .gallery_view .header .btn_close a:focus {opacity:1;}
 .gallery_view .header .btn_thumb {float:left;}
-.gallery_view .header .btn_thumb button {position:relative; padding-right:26px; height:80px; color:#fff; font-family:'HyundaiSansTextKRBold'; line-height:28px;}
+.gallery_view .header .btn_thumb button {position:relative; padding-right:26px; height:80px; font-family:'HyundaiSansTextKRBold'; line-height:28px;}
 .gallery_view .header .btn_thumb button:after {content:''; position:absolute; top:50%; right:0; width:18px; height:18px; margin:-9px 0 0 0; background:url('https://www-trucknbus.hyundai.com/kr/images/product/ico_showroom.svg') no-repeat -160px -120px;}
 .gallery_view .header .btn_thumb.on button:after {background-position:-160px -138px;}
 
@@ -60,7 +39,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .gallery_view .galleryBody .gallery_gate .menu .img_wrap:before {content:''; position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.4);}
 
 
-.galleryCont {width:100%; height:100%;}
+.galleryCont {width:100%; height:100%; padding-top: 300px;}
 .galleryCont .gallerySlide_wrap {position:relative; width:100%; height:100%;}
 .galleryCont .gallerySlide_wrap .gallerySlide {width:100%; height:100%;}
 .galleryCont .gallerySlide_wrap .slide_list {width:100%; height:100%;}
@@ -126,5 +105,43 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* 갤러�???? ?��????�� ?�� */
 .gallery_open {overflow:hidden; overflow-y:scroll}
 
+/* -=----------------------------------------- */
 button{cursor: pointer;}
 .list_arrow{position: absolute; top:0;}
+		/* reset */
+		*{margin: 0; padding: 0;}
+		img{vertical-align: top;}
+		li,dt,dd{list-style: none;}
+
+		/* TEXT - rolling */
+		#wrap {
+			width: 700px;
+			margin: 0 auto;
+		}
+		.box {
+			margin-top: 10px;
+			padding: 10px;
+		}
+		p {
+			font-size: 15px;
+			line-height: 1.5em;
+		}
+		.txt_num {padding: 10px; border: 1px solid #000;}
+		.txt_num .txt {display: inline-block; font-size: 20px; line-break: 1.3em;}
+
+		/* Slider */
+		.wrap-slider{overflow: hidden; position: relative; width: 400px; height: 250px; padding: 30px 150px;}
+		.wrap-slider .slider{display: flex;}
+		.wrap-slider .slide{flex-shrink: 0; position: relative; width: 400px; height: 250px; }
+		.wrap-slider .slide img{width: 100%; height: 100%; }
+
+		/* basic */
+		.wrap-slider[data-slider="basic"] .slide[data-slide="clone"],
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"],
+		.wrap-slider[data-slider="basic"] .slide[data-slide="prev"],
+		.wrap-slider[data-slider="basic"] .slide[data-slide="next"]{opacity: 1; }		
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"]{position: relative; z-index: 3; height: 310px; margin: -30px 0; transition: 0.3s ease;}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"] img{position: absolute; left: 50%; transform: translateX(-50%);}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"] img{width: auto;}	
+		.wrap-slider[data-slider="basic"] .slide:before{position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); content: ''; opacity: 1; transition: 0.3s ease;}
+		.wrap-slider[data-slider="basic"] .slide[data-slide="active"]:before{opacity: 0;}
