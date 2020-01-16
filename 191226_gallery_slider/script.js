@@ -38,7 +38,10 @@ function hasClass(elem, className){
 // 모든 엘리먼트 속성 제거
 function removeAttrAll(elems, attr){
   elems.forEach(elem => {
-    elem.attributes[attr] = "";
+    let thisAttr = elem.attributes[attr];
+    if(thisAttr){      
+      thisAttr.value = ""
+    }
   });
 }
 // 속성값 가지고 있는 엘리먼트 겥
@@ -71,62 +74,92 @@ TogLayerBtn.click(el => {
   }
 });
 // EVENT! 슬라이더
-function Slider(el, loopOption, whichElem, activeNum){
+function Slider(el, ops){
   this.type = el.dataset.slider;
   this.wrap = el;
   this.slider = el.querySelector(".slider");
   this.slides = el.querySelectorAll(".slide");    
   this.viewport = el.querySelector(".view-slider");    
   this.arrows = el.parentNode.querySelectorAll(".arrow button");    
-  this.activeNum = activeNum || 0;
-  this.loop = loopOption;
-}
-Slider.prototype.setActive = function(_activeNum){
+  this.onIdx = 0;
+  this.transition = "all 0.5s ease";
+  this.loop = true;
+  if(ops){
+    for(const op in ops){
+      this[op] = ops[op];
+    }
+  }
+};
+
+let sliders = [];
+const $sliders = document.querySelectorAll("[data-slider]");
+$sliders.forEach(slider =>{
+  let obj = new Slider(slider);
+  sliders.push(obj);
+});
+
+
+Slider.prototype.setActive = function(_onIdx, target){
   // active 넘버에 따라 slide dataset 셋팅.
-  const activePrevNum = _activeNum != 0 ? _activeNum - 1 : this.slides.length - 1,
-        activeNextNum = _activeNum != this.slides.length - 1 ? _activeNum + 1 : 0;
-  this.activeNum = _activeNum;
-  this.slides[_activeNum].dataset.slide = "active";
+  target.onIdx = _onIdx;
+  target.slides[_onIdx].dataset.slide = "active";
+};
+Slider.prototype.setPrevNext = function(_onIdx){
+  const activePrevNum = _onIdx != 0 ? _onIdx - 1 : this.slides.length - 1,
+        activeNextNum = _onIdx != this.slides.length - 1 ? _onIdx + 1 : 0;
   this.slides[activePrevNum].dataset.slide = "prev";
   this.slides[activeNextNum].dataset.slide = "next";
 };
-Slider.prototype.startSlider = function(){
-  this.setActive(this.activeNum);
-  //슬라이더 가로 사이즈 
-  this.slider.style = "width: "+this.slides[this.activeNum].offsetWidth * this.slides.length + "px; transform: translateX(0); transition: 0.5s ease;";
+Slider.prototype.startSlider = function(twin){
+  this.setActive(this.onIdx, this);
+  //전체 슬라이더 사이즈 
+  this.slider.style.width = this.slides[this.onIdx].offsetWidth * this.slides.length + "px";
+  this.clickArrow(twin);
 };
-Slider.prototype.moveToWhere = function(btnType){
-  let num,
-      lastIdx = this.slides.length - 1;
-  if(this.activeNum == lastIdx && btnType == "next"){
-    num = 0;
-  }else if (this.activeNum == 0 && btnType == "prev"){
-    num = lastIdx;
-  }else if(btnType == "next"){
-    num = this.activeNum + 1;
-  }else if(btnType == "prev"){
-    num = this.activeNum - 1;
-  }
-  return num;
-};  
-Slider.prototype.commonFun = function(){
-  this.startSlider();
+Slider.prototype.sliding = function(target, chnageIdx){
+  this.setActive( chnageIdx, target );
+  target.slider.style.transition = target.transition; 
+  target.slider.style.transform = "translate(-"+ target.slides[chnageIdx].offsetWidth * chnageIdx +"px)";
+};
+Slider.prototype.clickArrow = function(twin){
   const BtnArrow = new ClickElem( this.arrows );
   // 이 Arrow Click하면
   BtnArrow.click(el => {
-    const direction = el.dataset.btn,
-          whenFirst = this.activeNum === 0 && direction === "prev",
-          whenLast = this.activeNum === this.slides.length-1 && direction === "next";
-
+    console.log(this.loop)
+    const where = el.dataset.btn,
+          whenFirst = this.onIdx === 0 && where === "prev",
+          whenLast = this.onIdx === this.slides.length-1 && where === "next",
+          chnageIdx = this.moveToWhere( where );
     if(!this.loop && (whenFirst || whenLast)){
       return false;
     }else{
-      removeAttrAll(this.slides, "data-slide"); //this.slides 의 data-slide 속성을 remove해줘
-      this.setActive( this.moveToWhere( direction ) ); //선택한 방향으로 active 슬라이드 셋팅해줘
-      this.slider.style.transform = "translateX(-"+ this.slides[this.activeNum].offsetWidth * this.activeNum +"px)"; //셋팅된 active 슬라이드에 맞춰 이동해줘
+      //this.slides 의 data-slide 속성 remove
+      removeAttrAll(this.slides, "data-slide"); 
+      this.sliding(this, chnageIdx);
+      document.getElementById("uiCurrentIndex").innerText = chnageIdx +1;
+      // 쌍둥슬있으면 같이 움직
+      if(twin){
+        removeAttrAll(twin.slides, "data-slide"); 
+        twin.onIdx = chnageIdx;
+        this.sliding(twin, chnageIdx);
+      }
     }
   });
-};
+}
+Slider.prototype.moveToWhere = function(btnType){
+  let num,
+      lastIdx = this.slides.length - 1;
+  if(this.onIdx == lastIdx && btnType == "next"){
+    num = 0;
+  }else if (this.onIdx == 0 && btnType == "prev"){
+    num = lastIdx;
+  }else if(btnType == "next"){
+    num = this.onIdx + 1;
+  }else if(btnType == "prev"){
+    num = this.onIdx - 1;
+  }
+  return num;
+}; 
 Slider.prototype.makeClones = function(){
   // loop일경우 처음과 끝 이어지게
   let clonePrev = this.slides[this.slides.length-1].cloneNode(true),
@@ -139,45 +172,52 @@ Slider.prototype.makeClones = function(){
   this.slider.insertBefore(cloneNext, this.slider.children[this.slides.length - 1].nextElementSibling);
   this.slider.insertBefore(clonePrev, this.slider.children[0]);      
 };
-Slider.prototype.fullSize = function(){
-  this.wrap.parentNode.style = "height: 100%";
+Slider.prototype.fullSlide = function(){
+  this.slides.forEach(slide =>{
+    slide.style.height = window.innerHeight+"px";
+    slide.style.width = window.innerWidth+"px";
+  });
+  window.addEventListener("resize", () =>{
+    this.slides.forEach(slide =>{
+      slide.style.height = window.innerHeight+"px";
+      slide.style.width = window.innerWidth+"px";
+    });
+    this.slider.style.transition = "none"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
+    this.slider.style.transform = "translateX(-"+ this.slides[this.onIdx].offsetWidth * this.onIdx +"px)"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
+  });
 };
-Slider.prototype.changeWith = function(whichElem){
-  const BtnArrow = new ClickElem( whichElem.arrows );
-  BtnArrow.click(el => {
-      const direction = el.dataset.btn,
-            whenFirst = this.activeNum === 0 && direction === "prev",
-            whenLast = this.activeNum === this.slides.length-1 && direction === "next";
-
-      if(!this.loop && (whenFirst || whenLast)){
-        return false;
-      }else{
-        removeAttrAll(this.slides, "data-slide"); //this.slides 의 data-slide 속성을 remove해줘
-        this.setActive( this.moveToWhere( direction ) ); //선택한 방향으로 active 슬라이드 셋팅해줘
-        this.slider.style.transform = "translateX(-"+ this.slides[this.activeNum].offsetWidth * this.activeNum +"px)"; //셋팅된 active 슬라이드에 맞춰 이동해줘
-      }
-    });  
+Slider.prototype.multiSlide = function(num){
+  this.slides.forEach(slide =>{
+    slide.style.width = this.wrap.clientWidth / num + "px";
+  });
+  window.addEventListener("resize", () =>{
+    this.slides.forEach(slide =>{
+      slide.style.width = window.clientWidth / num + "px";
+    });
+    this.slider.style.transition = "none"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
+    this.slider.style.transform = "translateX(-"+ this.slides[this.onIdx].offsetWidth * num * this.onIdx +"px)"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
+  });
 }
 
-
 // 슬라이더 오브젝트 생성
-const dataSliders = document.querySelectorAll("[data-slider]");
+const $galleryMain = document.querySelector(".galleryBody [data-slider]");
+const $galleryThumb  = document.querySelector(".thumbCont [data-slider]");
+
 // 슬라이더 마다
 let fullSlider, multipleSlider;
-
-dataSliders.forEach(slider => {
-  switch(slider.dataset.slider){
-    case "full" :
-      fullSlider = new Slider(slider, true);
-      break;
-    case "multiple" :
-      multipleSlider = new Slider(slider, false);
-  }
+fullSlider = new Slider($galleryMain, {
+  slidesPerView: "full",
+});
+multipleSlider = new Slider($galleryThumb, {
+  loop: false,
+  slidesPerView: 4,
+  spaceBetween: "auto",
 });
 
-fullSlider.commonFun();
-fullSlider.fullSize();     
-fullSlider.changeWith(multipleSlider);
-multipleSlider.commonFun();      
-multipleSlider.changeWith(fullSlider);
+fullSlider.startSlider(multipleSlider);
+fullSlider.fullSlide();     
+fullSlider.makeClones();     
+
+multipleSlider.startSlider(fullSlider);     
+multipleSlider.multiSlide(4);
 // END: 슬라이더
