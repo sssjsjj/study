@@ -51,8 +51,8 @@
 #gnb {position:absolute; top:10px; right:0; padding-right:95px; letter-spacing:-1px; z-index:1;}
 #gnb .ul_gnb  {}
 #gnb .ul_gnb > li {float:left;}
-#gnb .ul_gnb > li > button {display: block; position: relative; padding:20px 30px 27px; font-size:20px; font-weight:600; line-height: 1; letter-spacing: -1px;}
-#gnb .ul_gnb > li > button:hover {color:#4891ae;}
+#gnb .ul_gnb > li > a {display: block; position: relative; padding:20px 30px 27px; font-size:20px; font-weight:600; line-height: 1; letter-spacing: -1px;}
+#gnb .ul_gnb > li > a:hover {color:#4891ae;}
 #gnb .ul_gnb:not(.mo_gnb) > li.on > a:after,
 #gnb .ul_gnb:not(.mo_gnb) > li > a:hover:after {display: block; position: absolute; bottom:0px; left:50%; width:21px; height:11px; margin-left:-10px; background:url(/SPA-2001/asan/kor/images/common/bg_gnb_on.png) no-repeat; content:'';}
 #gnb .ul_gnb > li > div  {display:none; position: absolute; top:70px; right:60px; padding-top:30px;}
@@ -135,7 +135,7 @@
     #gnb .ul_gnb > li.li_2 > div {right:0; width: 100%; background-color: #fff; text-align: left;}
     #gnb .ul_gnb > li.li_1 .gnb_sub {width:33.333%;}
     #gnb .ul_gnb > li.li_2 .gnb_sub {width:25%;}
-    #gnb .ul_gnb > li > button {padding-left:15px; padding-right:15px;}
+    #gnb .ul_gnb > li > a {padding-left:15px; padding-right:15px;}
     .content_sub > h2 {margin-bottom: 20px; padding-left:10px; font-size:35px;}
     .echo_list > li {width:33.33333%;}
     #wrap .content_sub > h2 {font-size:30px;}
@@ -168,28 +168,28 @@
     #header .area_header #gnb h1 a:before,
     #header .area_header #gnb h1 a:after,
     #wrap #gnb,
-    #wrap #gnb .ul_gnb > li > button:before,
-    #wrap #gnb .ul_gnb > li > button:after {-webkit-transition:all 0.2s ease-out; -moz-transition:all 0.2s ease-out; -o-transition:all 0.2s ease-out; -ms-transition:all 0.2s ease-out; transition:all 0.2s ease-out;}
+    #wrap #gnb .ul_gnb > li > a:before,
+    #wrap #gnb .ul_gnb > li > a:after {-webkit-transition:all 0.2s ease-out; -moz-transition:all 0.2s ease-out; -o-transition:all 0.2s ease-out; -ms-transition:all 0.2s ease-out; transition:all 0.2s ease-out;}
     .box_arrow_main_1,
     .gnb_bg {display: none;}
     #wrap #gnb {top:60px; padding-right: 0; border-top:1px solid #e5e5e5;}
     #wrap #gnb .ul_gnb > li {display:block; padding-right:0;}
-    #wrap #gnb .ul_gnb > li > button {display:block; padding:0 0 0 20px; border-bottom:1px solid #336b81; background-color:#4891ae; font-size:19px; color:#fff; line-height:49px; text-align: left;}
-    #wrap #gnb .ul_gnb > li > button:before,
+    #wrap #gnb .ul_gnb > li > a {display:block; padding:0 0 0 20px; border-bottom:1px solid #336b81; background-color:#4891ae; font-size:19px; color:#fff; line-height:49px; text-align: left;}
+    #wrap #gnb .ul_gnb > li > a:before,
     #wrap #gnb .ul_gnb > li.on > a:after,
-    #wrap #gnb .ul_gnb > li > button:hover:after,
-    #wrap #gnb .ul_gnb > li > button:after {display: block; position: absolute; top:16px; left:auto; right:15px; width:2px; height:13px; margin-left:0; background-color: #fff; background-image:none; content: '';}
+    #wrap #gnb .ul_gnb > li > a:hover:after,
+    #wrap #gnb .ul_gnb > li > a:after {display: block; position: absolute; top:16px; left:auto; right:15px; width:2px; height:13px; margin-left:0; background-color: #fff; background-image:none; content: '';}
     #wrap #gnb .ul_gnb > li.on > a:after,
-    #wrap #gnb .ul_gnb > li > button:after {right:23px;}
+    #wrap #gnb .ul_gnb > li > a:after {right:23px;}
     #wrap #gnb .ul_gnb > li.on > a:after,
-    #wrap #gnb .ul_gnb > li > button:hover:after,
-    #wrap #gnb .ul_gnb > li > button:before {-webkit-transform:rotate(45deg); -moz-transform:rotate(45deg); -o-transform:rotate(45deg); -ms-transform:rotate(45deg); transform:rotate(45deg);}
+    #wrap #gnb .ul_gnb > li > a:hover:after,
+    #wrap #gnb .ul_gnb > li > a:before {-webkit-transform:rotate(45deg); -moz-transform:rotate(45deg); -o-transform:rotate(45deg); -ms-transform:rotate(45deg); transform:rotate(45deg);}
     #wrap #gnb .ul_gnb > li.on > a:before,
-    #wrap #gnb .ul_gnb > li > button:hover:before,
-    #wrap #gnb .ul_gnb > li > button:after {-webkit-transform:rotate(-45deg); -moz-transform:rotate(-45deg); -o-transform:rotate(-45deg); -ms-transform:rotate(-45deg); transform:rotate(-45deg);}
-    #wrap #gnb .ul_gnb > li > button:hover:after {bottom:auto; left:auto; right:23px; margin-left:0; background-image: none;}
+    #wrap #gnb .ul_gnb > li > a:hover:before,
+    #wrap #gnb .ul_gnb > li > a:after {-webkit-transform:rotate(-45deg); -moz-transform:rotate(-45deg); -o-transform:rotate(-45deg); -ms-transform:rotate(-45deg); transform:rotate(-45deg);}
+    #wrap #gnb .ul_gnb > li > a:hover:after {bottom:auto; left:auto; right:23px; margin-left:0; background-image: none;}
     #wrap #gnb .ul_gnb > li.on > a,
-    #wrap #gnb .ul_gnb > li > button:hover {color:#fff; text-decoration: underline;}
+    #wrap #gnb .ul_gnb > li > a:hover {color:#fff; text-decoration: underline;}
     #wrap #gnb .ul_gnb > li.li_1 > div,
     #wrap #gnb .ul_gnb > li.li_2 > div {display: none; position:relative; top:auto; right:auto; padding-top:0; border-bottom:1px solid #e5e5e5;}
     #wrap #gnb .ul_gnb > li.li_1 .gnb_sub,

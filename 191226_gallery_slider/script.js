@@ -9,8 +9,8 @@ function ClickElem(name) {
 }
 ClickElem.prototype.click = function(callback) {
   this.name.forEach(el => {
-    el.addEventListener("click", ()=>{
-      callback(el);
+    el.addEventListener("click", (e, a)=>{
+      callback(el);      
     });
   });    
 };
@@ -54,7 +54,13 @@ function getElByAttr(elems, attrName, attrValue){
   });
   return that;
 }
-
+function toArr(elems){
+  let newArr = [];
+  elems.forEach(el=>{
+    newArr.push(el);
+  });
+  return newArr;
+}
 
 /************
   재료들로 DOM 콘츄롤 
@@ -80,8 +86,9 @@ function Slider(el, ops){
   this.slider = el.querySelector(".slider");
   this.slides = el.querySelectorAll(".slide");    
   this.viewport = el.querySelector(".view-slider");    
-  this.arrows = el.parentNode.querySelectorAll(".arrow button");    
-  this.onIdx = 0;
+  this.arrows = el.parentNode.querySelectorAll(".arrow button");
+  this.slidePerView = 1;    
+  this.activeIdx = 0;
   this.transition = "all 0.5s ease";
   this.loop = true;
   if(ops){
@@ -89,7 +96,7 @@ function Slider(el, ops){
       this[op] = ops[op];
     }
   }
-};
+}
 
 let sliders = [];
 const $sliders = document.querySelectorAll("[data-slider]");
@@ -99,64 +106,91 @@ $sliders.forEach(slider =>{
 });
 
 
-Slider.prototype.setActive = function(_onIdx, target){
+Slider.prototype.setActive = function(target){
   // active 넘버에 따라 slide dataset 셋팅.
-  target.onIdx = _onIdx;
-  target.slides[_onIdx].dataset.slide = "active";
+  target.slides[target.activeIdx].dataset.slide = "active";
 };
-Slider.prototype.setPrevNext = function(_onIdx){
-  const activePrevNum = _onIdx != 0 ? _onIdx - 1 : this.slides.length - 1,
-        activeNextNum = _onIdx != this.slides.length - 1 ? _onIdx + 1 : 0;
+Slider.prototype.setPrevNext = function(_activeIdx){
+  const activePrevNum = _activeIdx != 0 ? _activeIdx - 1 : this.slides.length - 1,
+        activeNextNum = _activeIdx != this.slides.length - 1 ? _activeIdx + 1 : 0;
   this.slides[activePrevNum].dataset.slide = "prev";
   this.slides[activeNextNum].dataset.slide = "next";
 };
-Slider.prototype.startSlider = function(twin){
-  this.setActive(this.onIdx, this);
+Slider.prototype.startSlider = function(thumbSlider){
+  if(this.loop){
+    this.makeClones();
+  }
+  this.responsiveSize();
+  window.addEventListener("resize", () =>{
+    this.responsiveSize();
+    this.slider.style.transition = "none"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
+    this.changeTransform(this)
+  });
+
+  this.setActive(this);
   //전체 슬라이더 사이즈 
-  this.slider.style.width = this.slides[this.onIdx].offsetWidth * this.slides.length + "px";
-  this.clickArrow(twin);
+  this.slider.style.width = this.slides[this.activeIdx].offsetWidth * this.slides.length + "px";
+  this.clickArrow(thumbSlider);
 };
-Slider.prototype.sliding = function(target, chnageIdx){
-  this.setActive( chnageIdx, target );
-  target.slider.style.transition = target.transition; 
-  target.slider.style.transform = "translate(-"+ target.slides[chnageIdx].offsetWidth * chnageIdx +"px)";
+Slider.prototype.changeTransform = function(target){
+  let slidePerView = target.slidePerView,
+      i = target.activeIdx;
+  if(slidePerView > 1 && i % slidePerView === slidePerView - 1) {
+    sliding(slidePerView);
+  }else if(slidePerView > 1 && i % slidePerView === 0){
+    sliding();    
+  }else if(slidePerView <= 1){
+    sliding();
+  }
+  function sliding(moveNum){
+    moveNum = moveNum || 1;
+    target.slider.style.transform = "translate(-"+ target.slides[i].offsetWidth * (i - (moveNum - 1)) +"px)";
+  }
 };
-Slider.prototype.clickArrow = function(twin){
-  const BtnArrow = new ClickElem( this.arrows );
+Slider.prototype.sliding = function(target, activeIdx){
+  removeAttrAll(target.slides, "data-slide");       
+  target.activeIdx = activeIdx;
+  this.setActive(target);
+  if(target.fraction){
+    this.showIdx(document.getElementById("uiCurrentIndex"));
+  }     
+  //window resizing 할때 transition제거 했으니 다시 transition 추가
+  target.slider.style.transition = target.transition;
+  this.changeTransform(target)
+};
+Slider.prototype.clickArrow = function(thumbSlider){
+  const BtnArrow = new ClickElem(this.arrows);
   // 이 Arrow Click하면
   BtnArrow.click(el => {
-    console.log(this.loop)
     const where = el.dataset.btn,
-          whenFirst = this.onIdx === 0 && where === "prev",
-          whenLast = this.onIdx === this.slides.length-1 && where === "next",
-          chnageIdx = this.moveToWhere( where );
+          whenFirst = this.activeIdx === 0 && where === "prev",
+          whenLast = this.activeIdx === this.slides.length-1 && where === "next";
     if(!this.loop && (whenFirst || whenLast)){
       return false;
     }else{
       //this.slides 의 data-slide 속성 remove
-      removeAttrAll(this.slides, "data-slide"); 
-      this.sliding(this, chnageIdx);
-      document.getElementById("uiCurrentIndex").innerText = chnageIdx +1;
+      this.sliding(this, this.changeActiveIdx(where));      
       // 쌍둥슬있으면 같이 움직
-      if(twin){
-        removeAttrAll(twin.slides, "data-slide"); 
-        twin.onIdx = chnageIdx;
-        this.sliding(twin, chnageIdx);
+      if(thumbSlider){
+        this.sliding(thumbSlider, this.activeIdx);
       }
     }
   });
+};
+Slider.prototype.showIdx = function(where){
+  where.innerText = this.activeIdx + 1;
 }
-Slider.prototype.moveToWhere = function(btnType){
+Slider.prototype.changeActiveIdx = function(btnType){
   let num,
       lastIdx = this.slides.length - 1;
-  if(this.onIdx == lastIdx && btnType == "next"){
+  if(this.activeIdx == lastIdx && btnType == "next"){
     num = 0;
-  }else if (this.onIdx == 0 && btnType == "prev"){
+  }else if (this.activeIdx == 0 && btnType == "prev"){
     num = lastIdx;
   }else if(btnType == "next"){
-    num = this.onIdx + 1;
+    num = this.activeIdx + 1;
   }else if(btnType == "prev"){
-    num = this.onIdx - 1;
+    num = this.activeIdx - 1;
   }
   return num;
 }; 
@@ -172,52 +206,71 @@ Slider.prototype.makeClones = function(){
   this.slider.insertBefore(cloneNext, this.slider.children[this.slides.length - 1].nextElementSibling);
   this.slider.insertBefore(clonePrev, this.slider.children[0]);      
 };
-Slider.prototype.fullSlide = function(){
+Slider.prototype.responsiveSize = function(){
+  let w, h;
+  if(this.fullSize){
+    w = window.innerWidth; h = window.innerHeight;
+  }else if(this.slidePerView){
+    let num = this.slidePerView;
+    w = this.wrap.clientWidth / num;
+  }
   this.slides.forEach(slide =>{
-    slide.style.height = window.innerHeight+"px";
-    slide.style.width = window.innerWidth+"px";
-  });
-  window.addEventListener("resize", () =>{
-    this.slides.forEach(slide =>{
-      slide.style.height = window.innerHeight+"px";
-      slide.style.width = window.innerWidth+"px";
-    });
-    this.slider.style.transition = "none"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
-    this.slider.style.transform = "translateX(-"+ this.slides[this.onIdx].offsetWidth * this.onIdx +"px)"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
+    slide.style.width = w+"px";      
+    slide.style.height = h+"px";
   });
 };
-Slider.prototype.multiSlide = function(num){
-  this.slides.forEach(slide =>{
-    slide.style.width = this.wrap.clientWidth / num + "px";
-  });
-  window.addEventListener("resize", () =>{
-    this.slides.forEach(slide =>{
-      slide.style.width = window.clientWidth / num + "px";
+Slider.prototype.clickThumb = function(){
+  if(this.thumbTarget){
+    const $thumbs = this.wrap.querySelectorAll("button.thumb"), 
+          thumbs = new ClickElem($thumbs),
+          thumbArr = toArr(thumbs.name);
+    thumbs.click((el) => {
+      let i = thumbArr.indexOf(el);
+      
+      this.sliding(this, i);    
+      this.sliding(this.thumbTarget, i);   
     });
-    this.slider.style.transition = "none"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
-    this.slider.style.transform = "translateX(-"+ this.slides[this.onIdx].offsetWidth * num * this.onIdx +"px)"; //바뀐 슬라이드 사이즈에 맞춰 이동해줘
-  });
-}
+  }
+};
+// 특정 객체 복사하여 새로운 객체 생성
+// function copyObj(el, Obj){
+//   let newObj = function(){
+//     Obj.call(this, el);
+//   }
+//   return newObj;
+// }
+// 특정 개체의 프로토타입 복사하여 대상 객체에 적용
+// function copyProto(Obj, ObjCopied){
+  // ObjCopied.prototype = Object.create(Obj.prototype);
+  // ObjCopied.prototype.constructor = ObjCopied;
+  // return ObjCopied;
+// }
 
 // 슬라이더 오브젝트 생성
-const $galleryMain = document.querySelector(".galleryBody [data-slider]");
-const $galleryThumb  = document.querySelector(".thumbCont [data-slider]");
+// FullSlider 객체 정의, 프로토타입 추가
+// let FullSlider = copyObj($galleryMain , Slider)
+// copyProto(Slider, FullSlider);
 
-// 슬라이더 마다
-let fullSlider, multipleSlider;
-fullSlider = new Slider($galleryMain, {
-  slidesPerView: "full",
+// ThumbSlider 객체 정의, 프로토타입 추가
+// ThumbSlider = copyObj($galleryThumb , Slider);
+// copyProto(Slider, ThumbSlider);
+// ThumbSlider.prototype.slideSize = function(){
+// };
+
+const $galleryMain = document.querySelector(".galleryBody [data-slider]"),
+      $galleryThumb  = document.querySelector(".thumbCont [data-slider]");
+
+let galleryMain = new Slider($galleryMain, {
+  fullSize: true,
+  fraction: true
 });
-multipleSlider = new Slider($galleryThumb, {
+let galleryThumb = new Slider($galleryThumb, {
   loop: false,
-  slidesPerView: 4,
-  spaceBetween: "auto",
+  thumbTarget: galleryMain,
+  fraction: true,
+  slidePerView: 4,
 });
 
-fullSlider.startSlider(multipleSlider);
-fullSlider.fullSlide();     
-fullSlider.makeClones();     
-
-multipleSlider.startSlider(fullSlider);     
-multipleSlider.multiSlide(4);
-// END: 슬라이더
+galleryMain.startSlider(galleryThumb);
+galleryThumb.startSlider(galleryMain);
+galleryThumb.clickThumb();

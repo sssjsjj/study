@@ -6,11 +6,66 @@
     const $header = qSelector("#header"),
           $footer = qSelector("#footer"),
           $contentArea = qSelector("#content_area");
-
+    let thisPage;
     /*** pages config ***/
+    /* 
+    처음 json을 가져오려고 했더니 오류가 뜸.
+    >> IIS 관리자 > MIME형식 > 파일이름확장명:json/MIME형식/application/json 추가
+    */
     makeAjaxRequest("common/js/pages-config.json", responseTxt => {
-      console.log(responseTxt);
-      
+      // 텍스트 가져와서 json으로 파싱.
+      const pages = JSON.parse(responseTxt);
+      // 공통 값들을 각 페이지 데이터에 모두 적용
+      for(const key in pages){      
+        const subPages = pages[key].subPages;
+        for(const commonKey in pages.common){
+          // 1 depth
+          if(key != "common" && pages[key][commonKey]){
+            pages[key][commonKey] = pages.common[commonKey] + pages[key][commonKey];
+          }
+
+          // 2 depth          
+          for(const subs in subPages){
+            if(key != "common" && pages[key][commonKey]){
+              subPages[subs][commonKey] = pages[key][commonKey] + subPages[subs][commonKey];
+            }else if(key != "common" && !pages[key][commonKey]){
+              subPages[subs][commonKey] = pages.common[commonKey] + subPages[subs][commonKey];
+            } 
+          }
+        }
+        
+        // 페이지별 css 존재하는 경우 head에 link 삽입
+        if(key != "common" && pages[key].pageCss){
+          const link = document.createElement("link");
+          link.href = pages[key].pageCss;
+          link.rel = "stylesheet";
+          link.type = "text/css";
+          document.head.appendChild(link);
+        } 
+
+        // 1depth인지 2depth인지 체크하여 ajax로 불러올 url값 변수에 저장.
+        const pageName = window.location.hash.split("#")[1] || "main";
+        if(key === pageName) {
+          thisPage = pages[key].url;
+        }
+        for(const subs in subPages){
+          if(subPages[pageName]){
+            thisPage = subPages[pageName].url;
+          }
+        }
+
+        console.log(findValueByKey(pages, pageName, "url"))
+        /*????????????????????????????????????
+        subPages.hasOwnProperty(pageName)
+        이 구문은 왜 에러가 뜨는 걸까?
+        */ 
+      }
+      console.log(thisPage)
+      // 변수에 저장한 url 대로 ajax 호출 
+      makeAjaxRequest(thisPage, responseTxt => {
+        $contentArea.innerHTML = responseTxt;
+        MAINVISUAL();
+      });
     });
 
     /*** header ***/
@@ -24,18 +79,8 @@
     makeAjaxRequest("html/footer.html", responseTxt => {
       $footer.innerHTML = responseTxt;
     });
-
-    // url이 플레인하믄 메인 html 로드행
-    if(window.location.href.split(".html")[1].length === 0){
-      makeAjaxRequest("html/main.html", responseTxt => {
-         $contentArea.innerHTML = responseTxt;
-        MAINVISUAL();
-      })
-    }
   };
 })();
-
-
 
 // http request 실행 함수
 function makeAjaxRequest(url, callBack) {
@@ -63,22 +108,54 @@ function makeAjaxRequest(url, callBack) {
         console.log("Caught Exception: " + e.description);
       }
     };
-    const type = url.split(".")[1];
-    console.log(type)
     xhr.open("GET", commonUrl + url, true);
-    xhr.responseType = type;
     xhr.send();
 }
 
+function findValueByKey(obj, findKey, findValue){
+  for(const key in obj){
+    if(key === findKey) {
+      return obj[key][findValue];
+    }
+    for(const subs in value){
+      if(value[findKey]){
+        return value[findKey][findValue];
+      }
+    }
+  }
+}
 // data-path를 가진 버튼들은 해당 경로로 ajax 실행
 function ajaxBtnClick(clickElems, changeArea){
   const btns = new ClickElem(clickElems);
   btns.click( btn => {
     makeAjaxRequest(btn.dataset.path, responseTxt =>{
+      // url에 파라미터 붙이기. 왜 물음표는 안되는걸까?
+      const url = window.location.href;
+            pathSplit = btn.dataset.path.split("/"),
+            pageName = pathSplit[pathSplit.length-1].split(".html")[0]
+      if( url.indexOf("#") > 0 ){
+        window.location.href = url.split("#")[0] + "#" + pageName;
+      }else{
+        window.location.href = url+"#" + pageName;
+        console.log(url);
+      }
+
+      
       changeArea.innerHTML = responseTxt;
     });
   });
 }
+
+// function ajaxPageLoad(){
+//   // const url = window.location.href;
+//   // url이 플레인하믄 메인 html 로드행
+//   if(window.location.href.split(".html")[1].length === 0){
+//     makeAjaxRequest("html/main.html", responseTxt => {
+//       $contentArea.innerHTML = responseTxt;
+//       MAINVISUAL();
+//     })
+//   }
+// }
 
 /******************
  페이지 별 스크립트

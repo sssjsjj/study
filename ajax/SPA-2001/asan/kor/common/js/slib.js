@@ -59,7 +59,7 @@ function getElByAttr(elems, attrName, attrValue){
 function qSelector(cssSelector){
   const nodeList =  Array.from(document.querySelectorAll(cssSelector));
   // 한개밖에 없을때는
-  if( cssSelector.indexOf("#") > -1 ){
+  if( nodeList.length === 1 ){
     return nodeList[0];
   }else{
     return nodeList;
