@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+*, *:after, *:before {-webkit-box-sizing:border-box; box-sizing:border-box;}
+html, body {-webkit-font-smoothing:antialiased; -webkit-text-size-adjust:none; text-size-adjust:none;}
+html {overflow-y:auto}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, textarea, p, blockquote, table, th, td, input, select, textarea, button {margin:0; padding:0}
+body, input, textarea, select, button, table {color:#222; font-size:18px; font-family:'HyundaiSansTextKRRegular', 'Malgun Gothic', Dotum, '돋움', AppleGothicNeoSD, 'Apple SD 산돌고딕 Neo', Gulim, '굴림',arial, sans-serif; line-height:28px}
+em {font-style:normal}
+fieldset, img {border:0 none}
+img {vertical-align:middle}
+dl, ul, ol, menu, li {list-style:none}
+input::-ms-clear {display:none}
+button {border-radius:0; background-color:transparent; cursor:pointer}
+a {color:inherit; text-decoration:none}
+a:hover,
+a:focus,
+a:active {background-color:transparent; text-decoration:underline;}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display:block}
+
+.box_icon_link {width: 500px; margin: 50px auto 0;}
+
+.layer{position: fixed; top: 5%; left: 0; right: 0; max-width: 600px; min-height: 650px; margin: 0 auto; padding: 50px; background-color: #fafafa; border: 1px solid #000;}
+[data-role='ajax-area'].hidden{display: none;}
+.list_icon_link {display: flex; justify-content: center; flex-wrap: wrap;}
+.list_icon_link li {width: calc((100% - 20px) / 3); margin: 10px 0 0 10px;}
+.list_icon_link li:nth-child(3n + 1) {margin-left: 0;}
+.list_icon_link li > * {display: flex; justify-content: center; align-items: center; width: 100%; height: 80px; border: 1px solid #ddd; font-size: 20px; color: #222; text-align: center;}

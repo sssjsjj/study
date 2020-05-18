@@ -1,0 +1,167 @@
+@charset "utf-8";
+
+.gallery_view {position:fixed; top:0; right:0; bottom:0; left:0; background-color:#fff; z-index:900;}
+.gallery_view .header {position:fixed; top:0; width:100%; min-width:320px; height:80px; background-color:#35719E; z-index:10;}
+.gallery_view .header .inner {padding:0 50px;}
+.gallery_view .header .title {position:absolute; top:18px; left:50px; max-width:50%;}
+.gallery_view .header .h1_tit {color:#fff; font-size:36px; font-family:'HyundaiSansHeadKRBold'; line-height:44px;}
+.gallery_view .header .btns_posi {position:absolute; top:0; right:48px; font-size:0; line-height:0;}
+.gallery_view .header .btn_gate, .gallery_view .header .btn_share, .gallery_view .header .btn_close {float:left; width:80px; height:80px; margin:0 2px;}
+.gallery_view .header .btn_gate {margin-left:24px;}
+.gallery_view .header .btn_gate a, .gallery_view .header .btn_share a, .gallery_view .header .btn_close a {display:block; height:80px; background:url('https://www-trucknbus.hyundai.com/kr/images/product/ico_showroom.svg') no-repeat; opacity:0.7;}
+.gallery_view .header .btn_gate a {background-position:0 -120px;}
+.gallery_view .header .btn_share a {background-position:-600px -80px;}
+.gallery_view .header .btn_close a {background-position:-80px -120px;}
+.gallery_view .header .btn_gate a:hover, .gallery_view .header .btn_gate a:focus, .gallery_view .header .btn_share a:hover, .gallery_view .header .btn_share a:focus, .gallery_view .header .btn_close a:hover, .gallery_view .header .btn_close a:focus {opacity:1;}
+.gallery_view .header .btn_thumb {float:left;}
+.gallery_view .header .btn_thumb button {position:relative; padding-right:26px; height:80px; font-family:'HyundaiSansTextKRBold'; line-height:28px;}
+.gallery_view .header .btn_thumb button:after {content:''; position:absolute; top:50%; right:0; width:18px; height:18px; margin:-9px 0 0 0; background:url('https://www-trucknbus.hyundai.com/kr/images/product/ico_showroom.svg') no-repeat -160px -120px;}
+.gallery_view .header .btn_thumb.on button:after {background-position:-160px -138px;}
+
+.gallery_view .galleryBody {width:100%; height:100%; padding-top:80px;}
+/* 갤러�???? 게이?�� */
+.gallery_view .galleryBody .gallery_gate {width:100%; height:100%;}
+.gallery_view .galleryBody .gallery_gate .menu {position:relative; float:left; height:100%; width:100%; padding:0;}
+.gallery_view .galleryBody .gallery_gate .menu a {position:relative; display:table; width:100%; height:100%; color:#fff; text-decoration:none; overflow:hidden;}
+.gallery_view .galleryBody .gallery_gate .menu a:before {content:''; display:block; position:absolute; width:100%; height:100%; background-color:#35719E; opacity:0; -ms-transition:opacity 400ms; -o-transition:opacity 400ms; -moz-transition:opacity 400ms; -webkit-transition:opacity 400ms; transition:opacity 400ms;}
+.gallery_view .galleryBody .gallery_gate .menu .txt_wrap {position:relative; display:table-cell; vertical-align:middle; text-align:center; -ms-transition:transform 0.3s ease; -o-transition:transform 0.3s ease; -moz-transition:transform 0.3s ease; -webkit-transition:transform 0.3s ease; transition:transform 0.3s ease;}
+.gallery_view .galleryBody .gallery_gate .menu .txt_wrap .inner {}
+
+.gallery_view .galleryBody .gallery_gate .menu a:hover:before {opacity:0.6;}
+.gallery_view .galleryBody .gallery_gate .menu a:hover .txt_wrap {-ms-transform:scale(1.1, 1.1); -o-transform:scale(1.1, 1.1); -moz-transform:scale(1.1, 1.1); -webkit-transform:scale(1.1, 1.1); transform:scale(1.1, 1.1);}
+
+.gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(2), .gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(2) ~ .menu {width:50%;}
+.gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(3), .gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(3) ~ .menu {width:33.33333333%;}
+/* portrait ?�� ?�� */
+.portrait .gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(2), .portrait .gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(2) ~ .menu {width:100%; height:50%;}
+.portrait .gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(3), .portrait .gallery_view .galleryBody .gallery_gate .menu:nth-child(1):nth-last-child(3) ~ .menu {width:100%; height:33.33333333%;}
+.gallery_view .galleryBody .gallery_gate .menu .img_wrap {display:block; position:absolute; top:0; left:0; width:100%; height:100%; background-repeat:no-repeat; background-position:50%; background-size:cover;}
+.gallery_view .galleryBody .gallery_gate .menu .img_wrap:before {content:''; position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.4);}
+
+
+.galleryCont {width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap {position:relative; width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap .gallerySlide {width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap .slide_list {width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap .slide_list .item {float:left; width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap .slide_list .module {position:relative; width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap .slide_list .module .img_wrap {position:absolute; display:block; width:100%; height:100%; background-repeat:no-repeat; background-position:50%; background-size:cover;}
+.galleryCont .gallerySlide_wrap .slide_list .module .img_wrap img {width: 100%;}
+.galleryCont .gallerySlide_wrap .slide_list .module .img_wrap:after {content:''; position:absolute; left:0; bottom:0; width:100%; height:100%; height:334px; opacity: 0.4; background: rgba(0, 0, 0, 1); background: -webkit-linear-gradient(bottom,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0)); background: -o-linear-gradient(bottom,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0)); background: -moz-linear-gradient(bottom,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0)); background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));}
+.galleryCont .gallerySlide_wrap .slide_list .module .img_wrap .btn_movie {position:absolute; top:50%; left:50%; width:80px; height:80px; margin:-40px 0 0 -40px; background:url('https://www-trucknbus.hyundai.com/kr/images/common/icon_all.svg') no-repeat -359px -600px; z-index:10;}
+.galleryCont .gallerySlide_wrap .slide_list .module .img_wrap .btn_movie:hover, .galleryCont .gallerySlide_wrap .slide_list .module .img_wrap .btn_movie:focus {background-position:-439px -600px;}
+.galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap {position:relative; width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap .inner {display:table; width:100%; height:100%;}
+.galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap .align_cont {display:table-cell; vertical-align: bottom;}
+.galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap .align_cont .bg_black {background:#000; height:80px; opacity:0.8;}
+.galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap .align_cont .bg_black .h2_tit {font-size:36px; float:left; margin:0 36px 0 50px;}
+.galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap .align_cont .bg_black p{padding-top:26px; opacity:0.7;}
+.galleryCont .gallerySlide_wrap .slide_list .module .txt_wrap .txt {padding-top:16px; opacity:0.7;}
+
+.galleryCont .gallerySlide_wrap .btn_arrow {position:absolute; top:50%; width:40px; height:80px; margin-top:-40px;}
+.galleryCont .gallerySlide_wrap .btn_arrow.prev {left:0;}
+.galleryCont .gallerySlide_wrap .btn_arrow.next {right:0;}
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_prev .ico,
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_next .ico {width:40px; height:80px;}
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_prev .ico:after, .galleryCont .gallerySlide_wrap .btn_arrow .btn_next .ico:after {top:0; width:40px; height:80px; margin:0; background:url('https://www-trucknbus.hyundai.com/kr/images/common/icon_all.svg') no-repeat;}
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_prev .ico:after {background-position:0 0;}
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_next .ico:after {background-position:-40px 0;}
+
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_prev:hover .ico:after, .galleryCont .gallerySlide_wrap .btn_arrow .btn_prev:focus .ico:after {background-position:0 -80px;}
+.galleryCont .gallerySlide_wrap .btn_arrow .btn_next:hover .ico:after, .galleryCont .gallerySlide_wrap .btn_arrow .btn_next:focus .ico:after {background-position:-40px -80px;}
+
+/* ?��?��?�� 버전 */
+.galleryCont .gallerySlide_wrap .slide_list .module.dark .img_wrap .btn_movie {background-position:-516.5px -600px;-ms-background-position-x:-517.5px;}/*191118 modify*/
+.galleryCont .gallerySlide_wrap .slide_list .module.dark .img_wrap .btn_movie:hover, .galleryCont .gallerySlide_wrap .slide_list .module.dark .img_wrap .btn_movie:focus {background-position:-437px -600px;}
+.galleryCont .gallerySlide_wrap .slide_list .module.dark .txt_wrap {color:#fff}
+
+/* ?��?��?�� 리스?�� */
+.thumbCont {position:absolute; top:-140px; left:0;  width:100%; padding: 30px; box-sizing: border-box; background-color:#35719E; opacity:0; -ms-transition:top 0.5s ease, opacity 0.5s ease; -o-transition:top 0.5s ease, opacity 0.5s ease; -moz-transition:top 0.5s ease, opacity 0.5s ease; -webkit-transition:top 0.5s ease, opacity 0.5s ease; transition:top 0.5s ease, opacity 0.5s ease;}
+/*.thumbCont .thumbSlide_wrap {padding:40px 30px 0 30px;}*/
+.thumbCont .thumbSlide_wrap {padding:40px 50px 0 30px;} /* 180726_수정 */
+.thumbCont .thumbSlide {position:relative;}
+.thumbCont .slide_list {}
+.thumbCont .slide_list:after {content:''; display:table; clear:both;}
+/*.thumbCont .slide_list .item {float:left; width:270px; margin:0 20px;}*/
+.thumbCont .slide_list .item {float:left; width:162px; margin:2px 12px;} /* 180718_웹접근성 수정 */
+.thumbCont .slide_list .item a{display:block;}
+.thumbCont .slide_list .item a:focus,
+.thumbCont .slide_list .item a:active{outline-style:dotted;}
+.thumbCont .slide_list .item .img_wrap {position:relative;}
+.thumbCont .slide_list .item.on .img_wrap:after{content:'';display:block;position:absolute;top:0;width:100%;height:100%;border:4px solid #fff;background:#35719E;z-index:10;opacity:0.6;} /* 180726_추가 */
+.thumbCont .slide_list .item .img_wrap img {max-width:100%;}
+.thumbCont .slide_list .item .img_wrap .btn_movie {position:absolute; top:50%; left:50%; width:40px; height:40px; margin:-20px 0 0 -20px; background:url('https://www-trucknbus.hyundai.com/kr/images/common/icon_all.svg') no-repeat -357px -680px;}
+
+.thumbCont .thumbSlide_wrap .btn_arrow {position:absolute; top:50%; width:50px; height:50px; margin-top:-25px;}
+.thumbCont .thumbSlide_wrap .btn_arrow.prev {left:0;}
+.thumbCont .thumbSlide_wrap .btn_arrow.next {right:0;}
+.thumbCont .thumbSlide_wrap .btn_arrow .btn_prev .ico, .thumbCont .thumbSlide_wrap .btn_arrow .btn_next .ico {width:50px; height:50px;}
+.thumbCont .thumbSlide_wrap .btn_arrow .btn_prev .ico:after, .thumbCont .thumbSlide_wrap .btn_arrow .btn_next .ico:after {top:0; width:50px; height:50px; margin:0; background:url('https://www-trucknbus.hyundai.com/kr/images/product/ico_showroom.svg') no-repeat;}
+.thumbCont .thumbSlide_wrap .btn_arrow .btn_prev .ico:after {background-position:0 -340px;}
+.thumbCont .thumbSlide_wrap .btn_arrow .btn_next .ico:after {background-position:-50px -340px;}
+
+.thumbCont.open {top:80px; z-index:1; opacity:1; -ms-transition:top 0.5s ease, opacity 0.5s ease; -o-transition:top 0.5s ease, opacity 0.5s ease; -moz-transition:top 0.5s ease, opacity 0.5s ease; -webkit-transition:top 0.5s ease, opacity 0.5s ease; transition:top 0.5s ease, opacity 0.5s ease;}
+
+/* 갤러�???? ?��????�� ?�� */
+.gallery_open {overflow:hidden; overflow-y:scroll}
+
+/* -=----------------------------------------- */
+button{cursor: pointer;}
+.list_arrow{position: absolute; top:0;}
+/* reset */
+*{margin: 0; padding: 0;}
+img{vertical-align: top;}
+li,dt,dd{list-style: none;}
+
+/* TEXT - rolling */
+#wrap {
+	width: 700px;
+	margin: 0 auto;
+}
+.box {
+	margin-top: 10px;
+	padding: 10px;
+}
+p {
+	font-size: 15px;
+	line-height: 1.5em;
+}
+.txt_num {padding: 10px; border: 1px solid #000;}
+.txt_num .txt {display: inline-block; font-size: 20px; line-break: 1.3em;}
+
+/* Slider */
+.area-slider{position: relative;}
+.area-slider + .area-slider {margin-top: 300px;}
+.wrap-slider{overflow: hidden; position: relative;}
+.wrap-slider .slider{display: flex;}
+.wrap-slider .slide{flex-shrink: 0; position: relative;}
+.wrap-slider .slide.clone{position: absolute;}
+.wrap-slider .slide.clone:first-child{left: 0; transform: translateX(-100%);}
+.wrap-slider .slide.clone:last-child{right: 0; transform: translateX(100%);}
+
+/* sideView */
+.wrap-slider[data-slider="sideView"]{ width: 400px; height: 250px; padding: 30px 150px;}
+.wrap-slider[data-slider="sideView"] .slide{width: 400px; height: 250px;}
+.wrap-slider[data-slider="sideView"] .slide[data-slide="clone"],
+.wrap-slider[data-slider="sideView"] .slide[data-slide="active"],
+.wrap-slider[data-slider="sideView"] .slide[data-slide="prev"],
+.wrap-slider[data-slider="sideView"] .slide[data-slide="next"]{opacity: 1; }		
+.wrap-slider[data-slider="sideView"] .slide[data-slide="active"]{position: relative; z-index: 3; height: 310px; margin: -30px 0; transition: 0.3s ease;}
+.wrap-slider[data-slider="sideView"] .slide[data-slide="active"] img{position: absolute; left: 50%; transform: translateX(-50%);}
+.wrap-slider[data-slider="sideView"] .slide[data-slide="active"] img{width: auto;}	
+.wrap-slider[data-slider="sideView"] .slide:before{position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); content: ''; opacity: 1; transition: 0.3s ease;}
+.wrap-slider[data-slider="sideView"] .slide[data-slide="active"]:before{opacity: 0;}
+
+/* full */
+.wrap-slider[data-slider="full"]{width: 100%; height: auto;}
+.wrap-slider[data-slider="full"] + .arrow{display: flex; justify-content: space-between; position: absolute; top:50%; width: 100%; transform: translateY(-70%);}
+.wrap-slider[data-slider="full"] + .arrow button{ padding: 50px; background-color: #fff;}
+.wrap-slider[data-slider="full"] .slide {overflow: hidden;}
+.wrap-slider[data-slider="full"] .slide img{height: 100%; margin-left: 50%; transform: translateX(-50%);}
+/* .wrap-slider[data-slider="full"]{width: 100%; height: auto;} */
+
+/* multiple */
+.wrap-slider[data-slider="multiple"]{}
+.wrap-slider[data-slider="multiple"] .slide{width: 250px;}
+.wrap-slider[data-slider="multiple"] .slide img{width: 100%;}
+.wrap-slider[data-slider="multiple"] .slide[data-slide="active"] button{border: 5px solid #f00; box-sizing: border-box;}

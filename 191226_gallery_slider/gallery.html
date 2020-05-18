@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="viewport" content="width=device-width" />
+<title></title>
+<link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<div class="gallery_view">
+  <div class="header">
+    <div class="inner">
+      <div class="btns_posi">
+        <div class="btn_thumb">
+          <p class="btn_open">
+            <button type="button" data-role="layertoggle" data-index="0"><span class="now" id="uiCurrentIndex">1</span> / <span>8</span></button>
+          </p>
+        </div>
+        <div class="btn_close" data-button="layerclose"> <a href="#" role="button" title="갤러리 닫기"><span class="sr_only">Close</span></a> </div>
+      </div>
+    </div>
+  </div>
+  <div class="galleryBody">
+    <div class="galleryCont">      
+      <div class="area-slider">
+        <div class="wrap-slider" data-slider="full">
+          <div class="view-slider">
+            <ul class="slider sideView">
+              <li class="slide"><img src="./img/gallery1.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery2.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery3.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery4.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery5.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery6.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery7.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery8.jpg" alt=""></li>
+            </ul>
+          </div>
+        </div>
+        <div class="arrow">
+          <button class="prev" data-btn="prev">이전</button>
+          <button class="next" data-btn="next">다음</button>
+        </div>
+      </div>
+      <!-- <div class="area-slider">
+        <div class="wrap-slider" data-slider="sideView">
+          <div class="view-slider">
+            <ul class="slider sideView">
+              <li class="slide"><img src="./img/gallery1.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery2.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery3.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery4.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery5.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery6.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery7.jpg" alt=""></li>
+              <li class="slide"><img src="./img/gallery8.jpg" alt=""></li>
+            </ul>
+          </div>
+        </div>
+        <div class="arrow">
+          <button class="prev" data-btn="prev">이전</button>
+          <button class="next" data-btn="next">다음</button>
+        </div>
+      </div>  -->
+    </div>
+    <div class="thumbCont" data-role="layertarget" data-index="0">
+      <div class="area-slider">
+        <div class="wrap-slider" data-slider="multiple">
+          <div class="view-slider">
+            <ul class="slider sideView">
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery1.jpg" alt=""></button>
+              </li>
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery2.jpg" alt=""></button>
+              </li>
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery3.jpg" alt=""></button>
+              </li>
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery4.jpg" alt=""></button>
+              </li>
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery5.jpg" alt=""></button>
+              </li>
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery6.jpg" alt=""></button>
+              </li>
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery7.jpg" alt=""></button>
+              </li>
+              <li class="slide">
+                <button class="thumb"><img src="./img/gallery8.jpg" alt=""></button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="arrow">
+          <button class="prev" data-btn="prev">이전</button>
+          <button class="next" data-btn="next">다음</button>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>
+
+
+<script type="text/javascript" src="script.js"></script>
+</body>
+</html>
