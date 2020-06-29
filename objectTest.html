@@ -1,3 +1,4 @@
+<!-- https://www.hyundai.com/kr/ko/e -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,6 +64,8 @@
         "cost3year": "그랜저 3년 유지비",
       },
     ]    
+    
+    // 차량 기본 공통
     class Car {
       constructor(name, mainImg, price, detailPage){
         this.name = name
@@ -72,6 +75,7 @@
       }
     }
 
+    // 세일 차량
     class SaleCar extends Car {
       constructor(name, mainImg, price, detailPage, salePrice){
         super(name, mainImg, price, detailPage)
@@ -80,6 +84,7 @@
       }
     }
 
+    // 탐색 기능 차량
     class CarExplorer extends Car {
       constructor(name, mainImg, price, detailPage, Engine, fuel, generation){
         super(name, mainImg, price, detailPage)
@@ -90,6 +95,7 @@
       }
     }
 
+    // 비교 기능 차량
     class CarCompare extends CarExplorer {
       constructor(name, mainImg, price, detailPage, Engine, fuel, generation, output, torque, cost3year){
         super(name, mainImg, price, detailPage, Engine, fuel, generation)

@@ -1,0 +1,13 @@
+# npm 디버그 기록
+*.log
+
+# 프로젝트 의존성
+node_modules
+
+# 임시 파일
+*.tmp
+
+# 자동 생성 es5파일은 추적하지 않음
+public/dist
+dist
+package-lock.json
