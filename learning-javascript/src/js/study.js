@@ -66,7 +66,7 @@ function randomFace(){
 
 
 // for(let temp, i=0, j=1; j<30; temp=i, i=j, j=i+temp){
-//   console.log(j)
+// //console.log(j)
 // }
 
 // 증가, 감소 연산자는 덧셈보다 먼저 실행된다.
@@ -140,7 +140,7 @@ updateBruce(1904, "actor")
 
 const arr2 = [1,2,3,4]
 arr2.copyWithin(0, -3, -1);
-console.log(arr2)
+//console.log(arr2)
 
 const sortArr = [
   {name: "Suzanne"},
@@ -151,7 +151,7 @@ const sortArr = [
 sortArr.sort((a,b) => {
   // console.log(a);
   // console.log(b);
-  console.log(a.name > b.name)
+//console.log(a.name > b.name)
 });
 
 // console.log(sortArr.sort((a,b) => a.name > b.name))
@@ -162,14 +162,14 @@ function Person(name) {
     this.name = name;
     this.id = Person.nextId++;
 }
-console.log(Person)
+//console.log(Person)
 class Person1 {
   constructor(name) {
     this.name = name;
     this.id = Person.nextId++;
   }
 }
-console.log(Person1)
+//console.log(Person1)
 
 Person.nextId = 0;
 const jamie = new Person("Jamie"),
@@ -179,21 +179,21 @@ const jamie = new Person("Jamie"),
 
       const arr22 = [jamie, juliet, peter, jay];
 
-console.log(arr22)
+//console.log(arr22)
 
 const cards = [];
 for(let suit of ['H', 'C', 'D', 'S'])
   for(let value=1; value<=13; value++)
     cards.push({suit, value});
 
-console.log(cards.filter(c => c.value > 10 && c.suit === 'H'));
+//console.log(cards.filter(c => c.value > 10 && c.suit === 'H'));
 
 
 {
   const suits = { 'H': '\u2665', 'C': '\u2664', 'D': '\u2666', 'S': '\u2660'};
   const values = { 1: 'A', 11: 'J', 12: 'Q', 13: 'K'};
-  console.log(cards.map(c => cardToString(suits, values, c)))
-  console.log(cards.filter(c => c.value === 2).map(c => cardToString(suits, values, c)));
+//console.log(cards.map(c => cardToString(suits, values, c)))
+//console.log(cards.filter(c => c.value === 2).map(c => cardToString(suits, values, c)));
 }
 function cardToString(suits, values, c){
   const newArr = values
@@ -246,18 +246,18 @@ const userRoles = new Map(users);
 // console.log([...userRoles.keys()])
 
 // for(let u of userRoles.entries()){
-//     console.log(u); console.log(r)}
+//   //console.log(u); console.log(r)}
 // for(let [u, r] of userRoles.entries())
-//   console.log(`${u.name}: ${r}`);
+// //console.log(`${u.name}: ${r}`);
 
 // try{
-//   console.log("this line is executed...");
+// //console.log("this line is executed...");
 //   // throw new Error("whoops");
-//   console.log("this line is not..")
+// //console.log("this line is not..")
 // }catch(err){
-//   console.log("there was an error")
+// //console.log("there was an error")
 // }finally{
-//   console.log("always executed")
+// //console.log("always executed")
 // }
 
 function* rainbow(){
@@ -271,3 +271,76 @@ function* rainbow(){
 }
 // const it = rainbow();
 // console.log(it.next())
+
+function sum(arr, f){
+  if(typeof f!='function') f = x => x; //매개변수 f에 함수가 전달되지 않으면 각 배열값으로 기냥 반환
+  return arr.reduce((a,x)=>a+=f(x),0)
+  //a는 반환받을 값, x는 각 배열값, 0은 a의 기본값. a에 f(x)값을 계속 더함.
+}
+const arr3 = [1,2,3]
+// console.log(sum(arr3))
+// console.log(sum(arr3, x=>x*x))
+
+function newSummer(f){
+  return arr => sum(arr,f);
+}
+
+// console.log(newSummer(x=>x*x*x))
+
+function findNeedle(haystack){
+  if(haystack.length === 0) return "no haystack here!"
+  if(haystack.shift() === 'needle') return "found it!"
+  return findNeedle(haystack);
+}
+const stacks = ['hay','hay','hay','hay','needle','hay','hay']
+// console.log(findNeedle(stacks))
+// console.log(stacks.shift())
+// console.log(stacks.shift())
+
+function countdown(){
+  console.log("Countdown:")
+  for(let i=5; i>=0; i--){
+    setTimeout(function(){
+      console.log(i===0? "Go!" :i);
+    }, (5-i) * 1000);
+  }
+}
+// countdown()
+
+// function countdown(seconds){
+//   return new Promise(function(resolve, reject){
+//     for(let i=seconds; i>=0; i--){
+//       setTimeout(function(){
+//         if(i===13) return reject(new Error(`Oh my god! it's ${i}`))
+//         if(i>0) console.log(i + '!!!!!')
+//         else resolve(console.log("GO!"));
+//       }, (seconds-i)*1000)
+//     }
+//   });
+// }
+// countdown(13).then(
+//   function(){
+//     console.log("countdown completed successfully")
+//   },
+//   function(err){
+//     console.log(`error ${err.message}`)
+//   }
+// );
+
+// const EventEmitter = require('events').EventEmitter
+
+
+const btn = document.querySelector(".btn-submit");
+
+btn.onclick = function(e){
+  const inputValue = document.querySelector("input[type='text']").value;
+  const arr = [];
+  for(const letter of inputValue){
+    if(arr.indexOf(letter) > -1){
+      arr.splice(arr.indexOf(letter),1)
+    }
+    arr.push(letter)
+  }
+  console.log(arr.join(" "))
+  console.log(arr.length)
+}
