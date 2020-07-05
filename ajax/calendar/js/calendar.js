@@ -11,7 +11,7 @@ function Calendar(elem) {
   this.sorting = "month";
   // 카렌다 시작
   this.start = () => {
-    httpGet("/calendar/month.html", responseText => {
+    httpGet("/ajax/calendar/month.html", responseText => {
       const areaCalendar = document.getElementById("areaCalendar");
       areaCalendar.innerHTML = responseText;
       this.goToHash();
@@ -89,12 +89,12 @@ Calendar.prototype.drawDays = function(){
   for(let i = trNum; i--;){
     const $tbodyTr = $tbody.querySelectorAll("tr")[i];
     for(let n = 7; n--;){
-      $tbodyTr.innerHTML += "<td></td>";
+      $tbodyTr.innerHTML += `<td></td>`;
     }
   }
   const $tbodyTd = $tbody.querySelectorAll("td");
   for(let i = 0; i < this.lastDate; i++){
-    $tbodyTd[this.firstDay + i].innerHTML = `<span class='date'>${i + 1}</span>`;
+    $tbodyTd[this.firstDay + i].innerHTML = `<button class="add-schedule"><span class='date'>${i + 1}</span><span class="add-txt">+ schedule</span></button>`;
     $tbodyTd[this.firstDay + i].dataset.date = (i + 1)
   }
   
@@ -111,7 +111,7 @@ Calendar.prototype.markToday = function(){
 };
 // 스케쥴 가져오기
 Calendar.prototype.getSchedule = function(){
-  httpGet("/calendar/js/schedules.json", responseText => {
+  httpGet("/ajax/calendar/js/schedules.json", responseText => {
     const schedules = JSON.parse(responseText);
     for(let key in schedules){
       const schedule = schedules[key];
@@ -147,38 +147,54 @@ Calendar.prototype.getSchedule = function(){
         
         // 일정 있는 날짜에 버튼과 팝업 삽입.
         dDay.innerHTML += `<button id="${key}" class="detail-plan" style="width: calc(${width})" draggable="true" data-js="dragDrop openPopup">${title}</button>`;
-        dDay.innerHTML += `
-          <div class="layerPopup hide" data-js="layerPopup">
-            <p class="date">
-              ${month}/${dates}</span>  ${days}
-            </p>
-            <h3 class="tit-sch">${title}</h3>
-            <p class="desc" data-js="schDesc">${desc}</p>
-            <button class="close" data-js="close"> <i class="icon-cross"></i> <span class="ir-hidden">닫기</span></button>
-          </div>
-        `;
+        dDay.innerHTML += this.popupMarkup({month, dates, days, title, desc});
         // 여기
         const $buttons = this.elem.querySelectorAll(`[data-js*="openPopup"]`);
               $popup = this.elem.querySelector(`[data-js*="layerPopup"]`);
-        clickEvent($buttons, e => {
-          show($popup);
-          const winW = window.innerWidth,
-                popupW = $popup.clientWidth;
-          if(e.clientX > winW - popupW - 30){
-            $popup.classList.add("rtl")
-          }
-
-        });
-      
-        const close = $popup.querySelectorAll("[data-js='close']");
-        clickEvent(close, e => {
-          hide($popup);
-        });
+        this.popupInteract($buttons, $popup)
       }
     }
+    this.addSchedule();
     this.dragDrop();
   });
 };
+
+// 팝업 마크업 삽입
+Calendar.prototype.popupMarkup = function({month, dates, days, title, desc}){
+  const thisSchedule = {month, dates, days, title, desc};
+  for(const key in thisSchedule){
+    const s = thisSchedule;
+    if(!s[key]){
+      s[key] = `<input type='text' placeholder='${key}'> </input>`
+    }
+  }
+  return `
+  <div class="layerPopup hide" data-js="layerPopup">
+    <p class="date">
+      ${month}/${dates}</span>  ${days}
+    </p>
+    <h3 class="tit-sch">${title}</h3>
+    <p class="desc" data-js="schDesc">${desc}</p>
+    <button class="close" data-js="close"> <i class="icon-cross"></i> <span class="ir-hidden">닫기</span></button>
+  </div>
+`;
+};
+// 팝업 상호작용
+Calendar.prototype.popupInteract = function(buttons, popup){
+  clickEvent(buttons, e => {
+    show(popup);
+    const winW = window.innerWidth,
+          popupW = popup.clientWidth;
+    if(e.clientX > winW - popupW - 30){
+      popup.classList.add("rtl")
+    }
+  });
+
+  const close = $popup.querySelectorAll("[data-js='close']");
+  clickEvent(close, e => {
+    hide($popup);
+  });
+}
 // 스케쥴 드래그앤드랍
 Calendar.prototype.dragDrop = function(){
   const targets = this.elem.querySelectorAll("[data-js*='dragDrop']"),
@@ -201,6 +217,19 @@ Calendar.prototype.dragDrop = function(){
     };
   });
 };
+// 스케쥴 삽입
+Calendar.prototype.addSchedule = function({}){
+  const btnAddSchedule = document.querySelectorAll(".add-schedule")
+  for(const btn of btnAddSchedule){
+    btn.onclick = e => {
+      console.log(btn.parentElement)
+      btn.parentElement.innerHTML += this.popupMarkup();
+      $popup = btn.parentElement.querySelector(`[data-js*="layerPopup"]`);
+     show($popup);
+    }
+  }
+};
+
 // 이전, 다음 버튼 클릭 이벤트
 Calendar.prototype.arrowControl = function(){
   const $arrows = this.elem.querySelectorAll(".area-arrow button");
