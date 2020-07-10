@@ -2,7 +2,7 @@
   "name": "learning-javascript",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack -w"
+    "dev": "webpack -w"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",

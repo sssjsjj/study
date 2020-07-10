@@ -11,7 +11,7 @@ function Calendar(elem) {
   this.sorting = "month";
   // 카렌다 시작
   this.start = () => {
-    httpGet("/ajax/calendar/month.html", responseText => {
+    httpGet("/month.html", responseText => {
       const areaCalendar = document.getElementById("areaCalendar");
       areaCalendar.innerHTML = responseText;
       this.goToHash();
@@ -111,7 +111,7 @@ Calendar.prototype.markToday = function(){
 };
 // 스케쥴 가져오기
 Calendar.prototype.getSchedule = function(){
-  httpGet("/ajax/calendar/js/schedules.json", responseText => {
+  httpGet("/js/schedules.json", responseText => {
     const schedules = JSON.parse(responseText);
     for(let key in schedules){
       const schedule = schedules[key];
