@@ -1,50 +1,15 @@
-body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
-}
+body, div, section, ul, dl, h1, h2, h3, h4, h5, h6 {padding: 0; margin: 0; }
+ul, li, ol, dl, dt, dd{ list-style: none;}
+a{text-decoration: none;}
 
-ol, ul {
-  padding-left: 30px;
-}
+#root > div{display: flex;}
 
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
-}
+/* Header */
+header {height: 100%; padding: 20px 20px 20px 30px;}
+header h1{font-size: 19px; font-weight: normal;}
+header h1 span{display: block;}
+header ul{margin-top: 50px;}
+header ul li a{display: block; padding: 10px 20px 10px 0;}
 
-.status {
-  margin-bottom: 10px;
-}
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-}
-
-.square:focus {
-  outline: none;
-}
-
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
-}
+/* Contents Area */
+main{padding: 40px;}

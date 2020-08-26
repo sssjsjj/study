@@ -1,139 +1,71 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
+//====================================
 
-function Square(props){
+import './index.css';
+import Game from './components/tutorial-react'
+
+function App(){
   return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
+    <Router>
+      <div>
+        <header>
+          <h1><span>learning</span> <span>javascript</span> <span>study</span></h1>
+          <ul>
+            <li>
+              <Link to='/'>Home</Link>
+            </li>
+            <li>
+              <Link to='/chapter12'>chapter 12</Link>
+            </li>
+            <li>
+              <Link to='/users'>Users</Link>
+            </li>
+            <li>
+              <Link to='/tutorial-react'>React Tutorial</Link>
+            </li>
+          </ul>
+        </header>
+
+        <Switch>
+          <Route path='/tutorial-react'>
+            <main>
+              <Game />
+            </main>
+          </Route>
+          <Route path='/chapter12'>
+            <Chapter12 />
+          </Route>
+          <Route path='/users'>
+            <Users />
+          </Route>
+          <Route path='/'>
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   )
 }
 
-class Board extends React.Component {
-  renderSquare(i) {
-    return (
-      <Square 
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-      />
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
+function Home(){
+  return <main><h2>home</h2></main>;
+}
+function Chapter12(){
+  return <main><h2>Chapter 12 - 이터레이터와 제너레이터</h2></main>;
+}
+function Users(){
+  return <main><h2>users</h2></main>;
 }
 
-class Game extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      xIsNext: true,
-      history: [{
-        squares: Array(9).fill(null),
-      }]
-    }
-  }
-
-  handleClick(i){
-    const history = this.state.history;
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if(calculateWinner(this.state.history.squares) || squares[i]){
-      return;
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-    this.setState({
-        history: history.concat([{
-          squares: squares
-        }]),
-        xIsNext: !this.state.xIsNext
-      })
-  }
-
-  render() {
-    const history = this.state.history;
-    const current = history[history.length - 1];
-    const winner = calculateWinner(this.state.history.squares);
-
-    const moves = history.map((step, move) => {
-      const desc = move ?
-        `Go to move #${move}` : 
-        `Go to game start`;
-      return (
-        <li>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      )
-    })
-
-    let status;
-    if(winner){
-      status = `Winner: ${winner}`
-      alert(status)
-    }else{
-      status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`
-    }
-
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board 
-            squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
-        </div>
-      </div>
-    );
-  }
-}
-
-// ========================================
-
+//====================================
 ReactDOM.render(
-  <Game />,
+  <App />,
   document.getElementById('root')
-);
-
-function calculateWinner(squares){
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++){
-    const [a, b, c] = lines[i];
-    if( squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
-      return squares[a];
-    }
-  }
-  return null;
-}
+)
