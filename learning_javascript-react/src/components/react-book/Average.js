@@ -35,6 +35,7 @@ const Average = () => {
 
 // 렌더링과 관련 없는 변수
   const id = useRef(1)
+  console.log(id)
   const setId = (n) => {
     id.current = n
   }
@@ -42,12 +43,11 @@ const Average = () => {
     console.log(id.current)
   }
   return (
-    <main>
-      
+    <main>      
       <div>
         refsample
+        {id.current}
       </div>
-      
       <h3>useMemo</h3>
       <input type="number" value={number} onChange={onChange} ref={inputEl} />
       <button onClick={onInsert}>등록</button>

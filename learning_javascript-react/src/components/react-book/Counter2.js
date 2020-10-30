@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react'
+import useInputs from '../../hooks/useInputs'
 
 function reducer(state, action) {
   // action.type에 따라 다른 작업 수행
@@ -13,26 +14,25 @@ function reducer(state, action) {
   }
 }
 
-function reducer2(state, action) {
-  return{
-    ...state,
-    [action.name]: action.value
-  }
-}
+//useInputs 공용 reducer만듬
+// function reducer2(state, action) {
+//   return{
+//     ...state,
+//     [action.name]: action.value
+//   }
+// }
 
 const Counter = () => {
   const [value, setValue] = useState(0) //기본값 0
   const [name, setName] = useState('')
   const [nickname, setNickname] = useState('')
+  // use reducer는
   const [state, dispatch] = useReducer(reducer, { value: 0 })
-  const [states, dispatches] = useReducer(reducer2, {
+  const [states, onChange] = useInputs({
     name1: '',
     nickname1: ''
   }) 
   const { name1, nickname1 } = states
-  const onChange = e => {
-    dispatches(e.target)
-  }
 
   useEffect(() => {// componentDidMount, componentDidUpdate를 합친 형태와 거의 같음
     console.log('effect!')
@@ -41,7 +41,7 @@ const Counter = () => {
       console.log('cleanup')
       console.log(name)
     }
-  }, []) //함수 두번째 파라미터로 비어있는 배열을 넣어주면. 처음 렌더링될때만 실행하고 업데이트될떄는 실행하지 않는다. 
+  }, [name]) //함수 두번째 파라미터로 비어있는 배열을 넣어주면. 처음 렌더링될때만 실행하고 업데이트될떄는 실행하지 않는다. 
   // 검사하고 싶은 값을 배열 안에 넣어주면 해당 값이 업데이트 되었을때만 작업이 실행된다.
 
   const onChangeName = e => {
