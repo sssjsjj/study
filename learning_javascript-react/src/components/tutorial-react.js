@@ -123,11 +123,7 @@ class Game extends React.Component {
 
 // ========================================
 
-export default function App(){
-  return (
-    <Game />
-  )
-}
+export default Game
 
 function calculateWinner(squares){
   const lines = [

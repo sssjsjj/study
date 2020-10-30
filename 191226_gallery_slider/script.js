@@ -110,12 +110,6 @@ Slider.prototype.setActive = function(target){
   // active 넘버에 따라 slide dataset 셋팅.
   target.slides[target.activeIdx].dataset.slide = "active";
 };
-Slider.prototype.setPrevNext = function(_activeIdx){
-  const activePrevNum = _activeIdx != 0 ? _activeIdx - 1 : this.slides.length - 1,
-        activeNextNum = _activeIdx != this.slides.length - 1 ? _activeIdx + 1 : 0;
-  this.slides[activePrevNum].dataset.slide = "prev";
-  this.slides[activeNextNum].dataset.slide = "next";
-};
 Slider.prototype.startSlider = function(thumbSlider){
   if(this.loop){
     this.makeClones();
@@ -226,7 +220,9 @@ Slider.prototype.clickThumb = function(){
           thumbArr = toArr(thumbs.name);
     thumbs.click((el) => {
       let i = thumbArr.indexOf(el);
-      
+      console.log(thumbArr)
+      console.log(el)
+      console.log(i)
       this.sliding(this, i);    
       this.sliding(this.thumbTarget, i);   
     });
