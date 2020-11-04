@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useRef } from 'react'
-
+import styles from './CSSModule.module.css'
 const getAverage = numbers => {
   console.log('평균값 계산 중..')
   if (numbers.length === 0) return 0
@@ -56,8 +56,8 @@ const Average = () => {
           <li key={index}>{value}</li>
         ))}
       </ul>
-      <div>
-        <b>평균값:</b> {avg}
+      <div className={styles.wrapper}>
+        <b>평균값:</b> <span className="something">{avg}</span>
       </div>
     </main>
   )
